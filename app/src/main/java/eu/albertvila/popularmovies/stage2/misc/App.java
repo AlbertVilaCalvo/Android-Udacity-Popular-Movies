@@ -2,6 +2,8 @@ package eu.albertvila.popularmovies.stage2.misc;
 
 import android.app.Application;
 
+import com.squareup.leakcanary.LeakCanary;
+
 import eu.albertvila.popularmovies.stage2.BuildConfig;
 import timber.log.Timber;
 
@@ -17,7 +19,7 @@ public class App extends Application {
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
             // TODO add Stetho
-            // TODO add Leak Canary
+            LeakCanary.install(this);
         }
     }
 }
