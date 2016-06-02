@@ -25,7 +25,7 @@ public class App extends Application {
                 }
             });
 
-            // TODO add Stetho
+            Timber.plant(new StethoTree());
 
             LeakCanary.install(this);
         }
