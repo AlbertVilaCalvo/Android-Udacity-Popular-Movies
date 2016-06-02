@@ -17,8 +17,16 @@ public class App extends Application {
         super.onCreate();
 
         if (BuildConfig.DEBUG) {
-            Timber.plant(new Timber.DebugTree());
+            Timber.plant(new Timber.DebugTree() {
+                @Override
+                protected String createStackElementTag(StackTraceElement element) {
+                    // Add the line number
+                    return super.createStackElementTag(element) + ":" + element.getLineNumber();
+                }
+            });
+
             // TODO add Stetho
+
             LeakCanary.install(this);
         }
     }
