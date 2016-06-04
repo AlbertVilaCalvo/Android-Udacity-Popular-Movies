@@ -50,7 +50,7 @@ public class InMemoryMovieRepository implements MovieRepository {
     private String apiKey;
 
     private InMemoryMovieRepository(Context context) {
-        this.context = context;
+        this.context = context.getApplicationContext();
 
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         if (BuildConfig.DEBUG) {
