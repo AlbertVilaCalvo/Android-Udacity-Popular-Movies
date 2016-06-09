@@ -13,9 +13,6 @@ import eu.albertvila.popularmovies.stage2.data.api.DiscoverMoviesResponse;
 import eu.albertvila.popularmovies.stage2.data.api.MovieDbService;
 import eu.albertvila.popularmovies.stage2.data.model.Movie;
 import okhttp3.OkHttpClient;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -68,34 +65,6 @@ public class InMemoryMovieRepository implements MovieRepository {
     }
 
     @Override
-    public List<Movie> getMovies(String sortOrder) {
-        Call<DiscoverMoviesResponse> call = movieDbService.discoverMovies(apiKey, sortOrder);
-
-        call.enqueue(new Callback<DiscoverMoviesResponse>() {
-            @Override
-            public void onResponse(Call<DiscoverMoviesResponse> call, Response<DiscoverMoviesResponse> response) {
-                Timber.d("response.raw(): %s", response.raw().toString());
-                if (response.isSuccessful()) {
-                    DiscoverMoviesResponse discoverMoviesResponse = response.body();
-                    // return discoverMoviesResponse.getMovies();
-                } else {
-                    // The network request failed -> show the text 'Try again'
-                    // showErrorView();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<DiscoverMoviesResponse> call, Throwable t) {
-                Timber.e(t, "onFailure");
-                t.printStackTrace();
-                // The network request failed -> show the text 'Try again'
-                // showErrorView();
-            }
-        });
-
-        return null;
-    }
-
     public Observable<List<Movie>> getMoviesRx(String sortOrder) {
         Observable<DiscoverMoviesResponse> observable = movieDbService.discoverMoviesRx(apiKey, sortOrder);
 
