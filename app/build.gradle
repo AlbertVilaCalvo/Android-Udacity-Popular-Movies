@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
 
-// Required by ButterKnife annotation processor compiler
+// Required by ButterKnife and Dagger annotation processor compiler
 apply plugin: 'com.neenbedankt.android-apt'
 
 android {
