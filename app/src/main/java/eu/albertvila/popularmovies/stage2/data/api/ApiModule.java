@@ -26,15 +26,12 @@ public class ApiModule {
 
     public static final String MOVIE_DB_API_KEY = "movie_db_api_key";
 
-    @Provides
-    @Singleton
-    @Named(MOVIE_DB_API_KEY)
-    public String apiKey(Context context) {
+    @Provides @Singleton @Named(MOVIE_DB_API_KEY)
+    public String provideApiKey(Context context) {
         return context.getString(R.string.movie_db_api_key);
     }
 
-    @Provides
-    @Singleton
+    @Provides @Singleton
     public MovieDbService provideMovieDbService() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
 
