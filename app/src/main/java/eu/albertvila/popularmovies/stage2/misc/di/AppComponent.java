@@ -3,6 +3,7 @@ package eu.albertvila.popularmovies.stage2.misc.di;
 import javax.inject.Singleton;
 
 import dagger.Component;
+import eu.albertvila.popularmovies.stage2.data.api.ApiModule;
 import eu.albertvila.popularmovies.stage2.feature.movielist.MovieListFragment;
 
 /**
@@ -10,7 +11,7 @@ import eu.albertvila.popularmovies.stage2.feature.movielist.MovieListFragment;
  */
 
 @Singleton
-@Component(modules = { AppModule.class })
+@Component(modules = { AppModule.class, ApiModule.class })
 public interface AppComponent {
 
     void inject(MovieListFragment target);
