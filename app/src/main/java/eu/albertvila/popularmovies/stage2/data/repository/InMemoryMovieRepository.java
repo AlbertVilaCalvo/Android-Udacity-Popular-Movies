@@ -1,7 +1,6 @@
 package eu.albertvila.popularmovies.stage2.data.repository;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 
@@ -20,35 +19,15 @@ import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
-import timber.log.Timber;
 
 /**
  * Created by Albert Vila Calvo on 28/5/16.
  */
 public class InMemoryMovieRepository implements MovieRepository {
-
-    private static volatile InMemoryMovieRepository instance;
-
-    public static InMemoryMovieRepository get(@NonNull Context context) {
-        InMemoryMovieRepository temp = instance;
-        if (temp == null) {
-            synchronized (InMemoryMovieRepository.class) {
-                temp = instance;
-                if (temp == null) {
-                    instance = temp = new InMemoryMovieRepository(context);
-                }
-            }
-        }
-        return temp;
-    }
-
-    private Context context;
     private MovieDbService movieDbService;
     private String apiKey;
 
-    private InMemoryMovieRepository(Context context) {
-        this.context = context.getApplicationContext();
-
+    public InMemoryMovieRepository(Context context) {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         if (BuildConfig.DEBUG) {
             builder.networkInterceptors().add(new StethoInterceptor());
@@ -68,7 +47,8 @@ public class InMemoryMovieRepository implements MovieRepository {
     public Observable<List<Movie>> getMoviesRx(String sortOrder) {
         Observable<DiscoverMoviesResponse> observable = movieDbService.discoverMoviesRx(apiKey, sortOrder);
 
-        return observable.subscribeOn(Schedulers.io())
+        return observable
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .map(new Func1<DiscoverMoviesResponse, List<Movie>>() {
                     @Override

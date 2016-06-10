@@ -1,12 +1,10 @@
 package eu.albertvila.popularmovies.stage2.feature.movielist;
 
-import android.content.Context;
-
 import java.util.List;
 
 import eu.albertvila.popularmovies.stage2.data.api.MovieDbService;
 import eu.albertvila.popularmovies.stage2.data.model.Movie;
-import eu.albertvila.popularmovies.stage2.data.repository.InMemoryMovieRepository;
+import eu.albertvila.popularmovies.stage2.data.repository.MovieRepository;
 import rx.Observable;
 import rx.functions.Action1;
 import timber.log.Timber;
@@ -16,17 +14,11 @@ import timber.log.Timber;
  */
 public class MovieListPresenter implements MovieList.Presenter {
 
-    private Context context;
     private MovieList.View view;
+    private MovieRepository movieRepository;
 
-    // TODO delete one of the 2 constructors
-
-    public MovieListPresenter(Context context) {
-        this.context = context;
-    }
-
-    public MovieListPresenter(MovieList.View view) {
-        this.view = view;
+    public MovieListPresenter(MovieRepository movieRepository) {
+        this.movieRepository = movieRepository;
     }
 
     // MovieList.Presenter
@@ -38,7 +30,7 @@ public class MovieListPresenter implements MovieList.Presenter {
 
     @Override
     public void getMovies() {
-        Observable<List<Movie>> observable = InMemoryMovieRepository.get(context).getMoviesRx(MovieDbService.SORT_BY_POPULARITY);
+        Observable<List<Movie>> observable = movieRepository.getMoviesRx(MovieDbService.SORT_BY_POPULARITY);
 
         observable.subscribe(new Action1<List<Movie>>() {
             @Override

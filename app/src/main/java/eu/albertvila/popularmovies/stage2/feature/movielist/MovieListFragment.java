@@ -13,11 +13,14 @@ import com.pnikosis.materialishprogress.ProgressWheel;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import eu.albertvila.popularmovies.stage2.R;
 import eu.albertvila.popularmovies.stage2.data.model.Movie;
+import eu.albertvila.popularmovies.stage2.misc.App;
 import eu.albertvila.popularmovies.stage2.misc.recyclerview.AutofitGridLayoutManager;
 
 /**
@@ -25,7 +28,7 @@ import eu.albertvila.popularmovies.stage2.misc.recyclerview.AutofitGridLayoutMan
  */
 public class MovieListFragment extends Fragment implements MovieList.View {
 
-    private MovieList.Presenter presenter;
+    @Inject MovieList.Presenter presenter;
 
     private List<Movie> movies = new ArrayList<>();
     private MoviesAdapter adapter;
@@ -42,7 +45,8 @@ public class MovieListFragment extends Fragment implements MovieList.View {
 
         unbinder = ButterKnife.bind(this, v);
 
-        presenter = new MovieListPresenter(getActivity());
+        ((App) getActivity().getApplication()).getAppComponent().inject(this);
+
         presenter.setView(this);
 
         adapter = new MoviesAdapter(movies);
