@@ -21,6 +21,8 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
 
+        // Notice that we are not calling '.apiModule(new ApiModule())'. It works without this
+        // because the ApiModule doesn't have constructor arguments.
         appComponent = DaggerAppComponent.builder().appModule(new AppModule(this)).build();
 
         if (BuildConfig.DEBUG) {
