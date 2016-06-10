@@ -5,6 +5,9 @@ import android.app.Application;
 import com.squareup.leakcanary.LeakCanary;
 
 import eu.albertvila.popularmovies.stage2.BuildConfig;
+import eu.albertvila.popularmovies.stage2.misc.di.AppComponent;
+import eu.albertvila.popularmovies.stage2.misc.di.AppModule;
+import eu.albertvila.popularmovies.stage2.misc.di.DaggerAppComponent;
 import timber.log.Timber;
 
 /**
@@ -12,9 +15,13 @@ import timber.log.Timber;
  */
 public class App extends Application {
 
+    private AppComponent appComponent;
+
     @Override
     public void onCreate() {
         super.onCreate();
+
+        appComponent = DaggerAppComponent.builder().appModule(new AppModule(this)).build();
 
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree() {
@@ -30,4 +37,9 @@ public class App extends Application {
             LeakCanary.install(this);
         }
     }
+
+    public AppComponent getAppComponent() {
+        return appComponent;
+    }
+
 }
