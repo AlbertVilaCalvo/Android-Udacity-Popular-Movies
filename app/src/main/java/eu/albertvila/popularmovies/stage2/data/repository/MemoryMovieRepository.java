@@ -9,6 +9,7 @@ import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
+import timber.log.Timber;
 
 /**
  * Created by Albert Vila Calvo on 28/5/16.
@@ -19,6 +20,7 @@ public class MemoryMovieRepository implements MovieRepository {
     private String apiKey;
 
     public MemoryMovieRepository(MovieDbService movieDbService, String apiKey) {
+        Timber.i("New MemoryMovieRepository created");
         this.movieDbService = movieDbService;
         this.apiKey = apiKey;
     }

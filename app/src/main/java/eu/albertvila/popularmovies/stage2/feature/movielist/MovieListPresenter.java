@@ -18,6 +18,7 @@ public class MovieListPresenter implements MovieList.Presenter {
     private MovieRepository movieRepository;
 
     public MovieListPresenter(MovieRepository movieRepository) {
+        Timber.i("New MovieListPresenter created");
         this.movieRepository = movieRepository;
     }
 
