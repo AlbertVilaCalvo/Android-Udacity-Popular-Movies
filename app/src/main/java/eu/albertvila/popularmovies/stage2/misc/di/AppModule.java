@@ -10,7 +10,7 @@ import dagger.Module;
 import dagger.Provides;
 import eu.albertvila.popularmovies.stage2.data.api.ApiModule;
 import eu.albertvila.popularmovies.stage2.data.api.MovieDbService;
-import eu.albertvila.popularmovies.stage2.data.repository.InMemoryMovieRepository;
+import eu.albertvila.popularmovies.stage2.data.repository.MemoryMovieRepository;
 import eu.albertvila.popularmovies.stage2.data.repository.MovieRepository;
 import eu.albertvila.popularmovies.stage2.feature.movielist.MovieList;
 import eu.albertvila.popularmovies.stage2.feature.movielist.MovieListPresenter;
@@ -44,7 +44,7 @@ public class AppModule {
 
     @Provides @Singleton
     public MovieRepository provideMovieRepository(MovieDbService movieDbService, @Named(ApiModule.MOVIE_DB_API_KEY) String apiKey) {
-        return new InMemoryMovieRepository(movieDbService, apiKey);
+        return new MemoryMovieRepository(movieDbService, apiKey);
     }
 
 }

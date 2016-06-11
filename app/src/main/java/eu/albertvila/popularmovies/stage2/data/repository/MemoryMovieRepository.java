@@ -13,12 +13,12 @@ import rx.schedulers.Schedulers;
 /**
  * Created by Albert Vila Calvo on 28/5/16.
  */
-public class InMemoryMovieRepository implements MovieRepository {
+public class MemoryMovieRepository implements MovieRepository {
 
     private MovieDbService movieDbService;
     private String apiKey;
 
-    public InMemoryMovieRepository(MovieDbService movieDbService, String apiKey) {
+    public MemoryMovieRepository(MovieDbService movieDbService, String apiKey) {
         this.movieDbService = movieDbService;
         this.apiKey = apiKey;
     }
