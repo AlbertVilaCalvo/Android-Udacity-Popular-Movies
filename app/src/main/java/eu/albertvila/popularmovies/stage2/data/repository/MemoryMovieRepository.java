@@ -37,8 +37,7 @@ public class MemoryMovieRepository implements MovieRepository {
                     public List<Movie> call(DiscoverMoviesResponse discoverMoviesResponse) {
                         return discoverMoviesResponse.getMovies();
                     }
-                })
-                .asObservable();
+                });
     }
 
 }
