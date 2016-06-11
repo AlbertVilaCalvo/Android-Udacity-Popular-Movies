@@ -24,7 +24,7 @@ public class MemoryMovieRepository implements MovieRepository {
     }
 
     @Override
-    public Observable<List<Movie>> getMoviesRx(String sortOrder) {
+    public Observable<List<Movie>> getMovies(String sortOrder) {
         Observable<DiscoverMoviesResponse> observable = movieDbService.discoverMoviesRx(apiKey, sortOrder);
 
         return observable

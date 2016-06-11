@@ -10,6 +10,6 @@ import rx.Observable;
  */
 public interface MovieRepository {
 
-    Observable<List<Movie>> getMoviesRx(String sortOrder);
+    Observable<List<Movie>> getMovies(String sortOrder);
 
 }

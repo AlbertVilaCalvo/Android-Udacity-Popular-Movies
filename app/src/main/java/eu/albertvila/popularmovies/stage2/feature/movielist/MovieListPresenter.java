@@ -30,7 +30,7 @@ public class MovieListPresenter implements MovieList.Presenter {
 
     @Override
     public void getMovies() {
-        Observable<List<Movie>> observable = movieRepository.getMoviesRx(MovieDbService.SORT_BY_POPULARITY);
+        Observable<List<Movie>> observable = movieRepository.getMovies(MovieDbService.SORT_BY_POPULARITY);
 
         observable.subscribe(new Action1<List<Movie>>() {
             @Override
