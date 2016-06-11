@@ -6,7 +6,7 @@ import eu.albertvila.popularmovies.stage2.data.api.MovieDbService;
 import eu.albertvila.popularmovies.stage2.data.model.Movie;
 import eu.albertvila.popularmovies.stage2.data.repository.MovieRepository;
 import rx.Observable;
-import rx.functions.Action1;
+import rx.Subscriber;
 import timber.log.Timber;
 
 /**
@@ -32,17 +32,23 @@ public class MovieListPresenter implements MovieList.Presenter {
     public void getMovies() {
         Observable<List<Movie>> observable = movieRepository.getMovies(MovieDbService.SORT_BY_POPULARITY);
 
-        observable.subscribe(new Action1<List<Movie>>() {
+        observable.subscribe(new Subscriber<List<Movie>>() {
             @Override
-            public void call(List<Movie> movies) {
+            public void onCompleted() {
+                Timber.i("MovieListPresenter getMovies() onCompleted()");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Timber.e(e, "MovieListPresenter getMovies() onError()");
+            }
+
+            @Override
+            public void onNext(List<Movie> movies) {
+                Timber.i("MovieListPresenter getMovies() onNext()");
                 if (view != null) {
                     view.showMovies(movies);
                 }
-            }
-        }, new Action1<Throwable>() {
-            @Override
-            public void call(Throwable throwable) {
-                Timber.e(throwable, "MovieListPresenter getMovies() onError()");
             }
         });
     }
