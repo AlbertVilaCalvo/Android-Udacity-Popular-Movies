@@ -2,6 +2,7 @@ package eu.albertvila.popularmovies.stage2.misc;
 
 import android.app.Application;
 
+import com.facebook.stetho.Stetho;
 import com.squareup.leakcanary.LeakCanary;
 
 import eu.albertvila.popularmovies.stage2.BuildConfig;
@@ -34,6 +35,7 @@ public class App extends Application {
                 }
             });
 
+            Stetho.initializeWithDefaults(this);
             Timber.plant(new StethoTree());
 
             LeakCanary.install(this);
