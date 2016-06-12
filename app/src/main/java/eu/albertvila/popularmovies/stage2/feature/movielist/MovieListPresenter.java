@@ -29,6 +29,10 @@ public class MovieListPresenter implements MovieList.Presenter {
         this.view = view;
     }
 
+    // TODO watch this videos
+    // https://caster.io/episodes/retrofit2-with-rxjava/
+    // https://caster.io/courses/rxjava/
+
     @Override
     public void getMovies() {
         Observable<List<Movie>> observable = movieRepository.getMovies(MovieDbService.SORT_BY_POPULARITY);
