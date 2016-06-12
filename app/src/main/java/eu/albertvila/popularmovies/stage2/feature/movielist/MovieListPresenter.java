@@ -33,6 +33,10 @@ public class MovieListPresenter implements MovieList.Presenter {
     public void getMovies() {
         Observable<List<Movie>> observable = movieRepository.getMovies(MovieDbService.SORT_BY_POPULARITY);
 
+        // TODO unsubscribe:
+        // if (subscription != null && !subscription.isUnsubscribed()) {
+        //    subscription.unsubscribe();
+        // }
         observable.subscribe(new Subscriber<List<Movie>>() {
             @Override
             public void onCompleted() {
