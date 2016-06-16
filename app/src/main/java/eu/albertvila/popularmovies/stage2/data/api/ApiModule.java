@@ -3,6 +3,9 @@ package eu.albertvila.popularmovies.stage2.data.api;
 import android.content.Context;
 
 import com.facebook.stetho.okhttp3.StethoInterceptor;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.ryanharter.auto.value.gson.AutoValueGsonTypeAdapterFactory;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -43,10 +46,13 @@ public class ApiModule {
             builder.networkInterceptors().add(new StethoInterceptor());
         }
 
+        // Required by AutoValue Gson Extension - https://github.com/rharter/auto-value-gson
+        Gson gson = new GsonBuilder().registerTypeAdapterFactory(new AutoValueGsonTypeAdapterFactory()).create();
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://api.themoviedb.org/3/")
                 .client(builder.build())
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
 

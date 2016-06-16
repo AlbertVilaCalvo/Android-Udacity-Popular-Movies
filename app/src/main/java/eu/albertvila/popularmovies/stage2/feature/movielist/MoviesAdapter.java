@@ -56,8 +56,8 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
 
         public void bind(Movie movie) {
             this.movie = movie;
-            textView.setText(movie.originalTitle);
-            Glide.with(imageView.getContext()).load(movie.getPosterUrl()).crossFade().into(imageView);
+            textView.setText(movie.originalTitle());
+            Glide.with(imageView.getContext()).load(movie.posterUrl()).crossFade().into(imageView);
         }
     }
 
