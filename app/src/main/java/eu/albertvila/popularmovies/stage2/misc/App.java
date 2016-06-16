@@ -1,6 +1,7 @@
 package eu.albertvila.popularmovies.stage2.misc;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.facebook.stetho.Stetho;
 import com.squareup.leakcanary.LeakCanary;
@@ -44,6 +45,10 @@ public class App extends Application {
 
     public AppComponent getAppComponent() {
         return appComponent;
+    }
+
+    public static AppComponent getComponent(Context context) {
+        return ((App) context.getApplicationContext()).appComponent;
     }
 
 }

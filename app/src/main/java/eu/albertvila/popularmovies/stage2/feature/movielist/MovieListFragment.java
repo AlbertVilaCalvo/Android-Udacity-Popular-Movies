@@ -45,7 +45,8 @@ public class MovieListFragment extends Fragment implements MovieList.View {
 
         unbinder = ButterKnife.bind(this, v);
 
-        ((App) getActivity().getApplication()).getAppComponent().inject(this);
+        // ((App) getActivity().getApplication()).getAppComponent().inject(this);
+        App.getComponent(getActivity()).inject(this);
 
         presenter.setView(this);
 
