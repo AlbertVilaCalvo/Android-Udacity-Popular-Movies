@@ -7,6 +7,7 @@ import eu.albertvila.popularmovies.stage2.data.model.Movie;
 import eu.albertvila.popularmovies.stage2.data.repository.MovieRepository;
 import rx.Observable;
 import rx.Subscriber;
+import rx.Subscription;
 import timber.log.Timber;
 
 /**
@@ -16,6 +17,7 @@ public class MovieListPresenter implements MovieList.Presenter {
 
     private MovieList.View view;
     private MovieRepository movieRepository;
+    private Subscription subscription;
 
     public MovieListPresenter(MovieRepository movieRepository) {
         Timber.i("New MovieListPresenter created");
@@ -27,6 +29,10 @@ public class MovieListPresenter implements MovieList.Presenter {
     @Override
     public void setView(MovieList.View view) {
         this.view = view;
+        if (view == null && subscription != null && !subscription.isUnsubscribed()) {
+            subscription.unsubscribe();
+            Timber.i("MovieListPresenter setView() subscription.unsubscribe()");
+        }
     }
 
     // TODO watch this videos
@@ -37,11 +43,7 @@ public class MovieListPresenter implements MovieList.Presenter {
     public void getMovies() {
         Observable<List<Movie>> observable = movieRepository.getMovies(MovieDbService.SORT_BY_POPULARITY);
 
-        // TODO unsubscribe:
-        // if (subscription != null && !subscription.isUnsubscribed()) {
-        //    subscription.unsubscribe();
-        // }
-        observable.subscribe(new Subscriber<List<Movie>>() {
+        subscription = observable.subscribe(new Subscriber<List<Movie>>() {
             @Override
             public void onCompleted() {
                 Timber.i("MovieListPresenter getMovies() onCompleted()");
