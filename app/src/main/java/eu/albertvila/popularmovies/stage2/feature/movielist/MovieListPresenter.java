@@ -54,7 +54,7 @@ public class MovieListPresenter implements MovieList.Presenter {
 
             @Override
             public void onNext(List<Movie> movies) {
-                Timber.i("MovieListPresenter getMovies() onNext()");
+                Timber.i("MovieListPresenter getMovies() onNext() - movies.size() %d", movies.size());
                 if (view != null) {
                     view.showMovies(movies);
                 }
