@@ -88,7 +88,7 @@ public class MovieListFragment extends Fragment implements MovieList.View {
     public void onPause() {
         super.onPause();
 
-        presenter.setView(null);
+        presenter.stop();
     }
 
     @Override

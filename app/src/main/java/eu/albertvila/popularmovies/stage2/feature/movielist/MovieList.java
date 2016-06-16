@@ -16,6 +16,7 @@ public interface MovieList {
 
     interface Presenter {
         void setView(MovieList.View view);
+        void stop();
         void getMovies();
     }
 

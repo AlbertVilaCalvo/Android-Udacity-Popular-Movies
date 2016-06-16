@@ -1,5 +1,7 @@
 package eu.albertvila.popularmovies.stage2.feature.movielist;
 
+import android.support.annotation.NonNull;
+
 import java.util.List;
 
 import eu.albertvila.popularmovies.stage2.data.api.MovieDbService;
@@ -27,11 +29,16 @@ public class MovieListPresenter implements MovieList.Presenter {
     // MovieList.Presenter
 
     @Override
-    public void setView(MovieList.View view) {
+    public void setView(@NonNull MovieList.View view) {
         this.view = view;
-        if (view == null && subscription != null && !subscription.isUnsubscribed()) {
+    }
+
+    @Override
+    public void stop() {
+        this.view = null;
+        if (subscription != null && !subscription.isUnsubscribed()) {
             subscription.unsubscribe();
-            Timber.i("MovieListPresenter setView() subscription.unsubscribe()");
+            Timber.i("MovieListPresenter stop() subscription.unsubscribe()");
         }
     }
 
