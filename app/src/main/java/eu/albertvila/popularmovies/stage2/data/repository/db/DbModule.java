@@ -36,6 +36,8 @@ public class DbModule {
         });
     }
 
+    // We must re-use the same BriteDatabase object. All insert, update, or delete operations must
+    // go through this object in order to correctly notify subscribers
     @Provides @Singleton
     BriteDatabase provideBriteDatabase(SqlBrite sqlBrite, SQLiteOpenHelper sqLiteOpenHelper) {
         BriteDatabase db = sqlBrite.wrapDatabaseHelper(sqLiteOpenHelper, Schedulers.io());
