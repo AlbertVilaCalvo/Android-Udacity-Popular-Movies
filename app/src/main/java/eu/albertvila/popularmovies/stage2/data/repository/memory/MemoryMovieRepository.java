@@ -1,10 +1,11 @@
-package eu.albertvila.popularmovies.stage2.data.repository;
+package eu.albertvila.popularmovies.stage2.data.repository.memory;
 
 import java.util.List;
 
 import eu.albertvila.popularmovies.stage2.data.api.DiscoverMoviesResponse;
 import eu.albertvila.popularmovies.stage2.data.api.MovieDbService;
 import eu.albertvila.popularmovies.stage2.data.model.Movie;
+import eu.albertvila.popularmovies.stage2.data.repository.MovieRepository;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;

@@ -12,7 +12,7 @@ import dagger.Module;
 import dagger.Provides;
 import eu.albertvila.popularmovies.stage2.data.api.ApiModule;
 import eu.albertvila.popularmovies.stage2.data.api.MovieDbService;
-import eu.albertvila.popularmovies.stage2.data.repository.MemoryMovieRepository;
+import eu.albertvila.popularmovies.stage2.data.repository.memory.MemoryMovieRepository;
 import eu.albertvila.popularmovies.stage2.data.repository.MovieRepository;
 import eu.albertvila.popularmovies.stage2.data.repository.db.DbMovieRepository;
 import eu.albertvila.popularmovies.stage2.feature.movielist.MovieList;
