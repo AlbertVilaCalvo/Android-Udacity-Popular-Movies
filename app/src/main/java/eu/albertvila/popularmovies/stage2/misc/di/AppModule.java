@@ -3,6 +3,8 @@ package eu.albertvila.popularmovies.stage2.misc.di;
 import android.app.Application;
 import android.content.Context;
 
+import com.squareup.sqlbrite.BriteDatabase;
+
 import javax.inject.Named;
 import javax.inject.Singleton;
 
@@ -12,6 +14,7 @@ import eu.albertvila.popularmovies.stage2.data.api.ApiModule;
 import eu.albertvila.popularmovies.stage2.data.api.MovieDbService;
 import eu.albertvila.popularmovies.stage2.data.repository.MemoryMovieRepository;
 import eu.albertvila.popularmovies.stage2.data.repository.MovieRepository;
+import eu.albertvila.popularmovies.stage2.data.repository.db.DbMovieRepository;
 import eu.albertvila.popularmovies.stage2.feature.movielist.MovieList;
 import eu.albertvila.popularmovies.stage2.feature.movielist.MovieListPresenter;
 
@@ -38,13 +41,18 @@ public class AppModule {
     }
 
     @Provides
-    public MovieList.Presenter provideMovieListPresenter(MovieRepository movieRepository) {
+    public MovieList.Presenter provideMovieListPresenter(@Named("db") MovieRepository movieRepository) {
         return new MovieListPresenter(movieRepository);
     }
 
-    @Provides @Singleton
-    public MovieRepository provideMovieRepository(MovieDbService movieDbService, @Named(ApiModule.MOVIE_DB_API_KEY) String apiKey) {
-        return new MemoryMovieRepository(movieDbService, apiKey);
+    @Provides @Singleton @Named("memory")
+    public MovieRepository provideMemoryMovieRepository(MovieDbService movieDbService, @Named(ApiModule.MOVIE_DB_API_KEY) String apiKey) {
+         return new MemoryMovieRepository(movieDbService, apiKey);
+    }
+
+    @Provides @Singleton @Named("db")
+    public MovieRepository provideDbMovieRepository(MovieDbService movieDbService, @Named(ApiModule.MOVIE_DB_API_KEY) String apiKey, BriteDatabase db) {
+        return new DbMovieRepository(movieDbService, apiKey, db);
     }
 
 }
