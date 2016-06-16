@@ -57,6 +57,8 @@ public class MovieListPresenter implements MovieList.Presenter {
                 Timber.i("MovieListPresenter getMovies() onNext() - movies.size() %d", movies.size());
                 if (view != null) {
                     view.showMovies(movies);
+                } else {
+                    Timber.d("MovieListPresenter getMovies() onNext() - view is null :(");
                 }
             }
         });
