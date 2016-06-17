@@ -1,6 +1,5 @@
 package eu.albertvila.popularmovies.stage2.data.repository.db;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -35,9 +34,9 @@ public class DbOpenHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_MOVIE_TABLE);
         // TODO add index?
 
-        // Add some test items
-        ContentValues contentValues = Movie.buildContentValues(22, "The title", "/nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg");
-        db.insert(Movie.TABLE, null, contentValues);
+        // Uncomment to add some test items
+        // ContentValues contentValues = Movie.buildContentValues(22, "The title", "/nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg");
+        // db.insert(Movie.TABLE, null, contentValues);
     }
 
     @Override

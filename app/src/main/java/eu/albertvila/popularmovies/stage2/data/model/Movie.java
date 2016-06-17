@@ -23,6 +23,8 @@ public abstract class Movie {
 
     public static final String TABLE = "movie";
 
+    // http://stackoverflow.com/questions/3192064/about-id-field-in-android-sqlite
+    // http://stackoverflow.com/questions/4313987/do-i-have-to-use-id-as-a-sqlite-primary-key-and-does-it-have-to-be-an-int-an
     public static final String ID = "_id";
     public static final String ORIGINAL_TITLE = "original_title";
     public static final String POSTER_PATH = "poster_path";
@@ -67,6 +69,10 @@ public abstract class Movie {
             }
         }
     };
+
+    public static ContentValues buildContentValues(Movie movie) {
+        return buildContentValues(movie.id(), movie.originalTitle(), movie.posterPath());
+    }
 
     public static ContentValues buildContentValues(long id, String originalTitle, String posterPath) {
         ContentValues contentValues = new ContentValues();
