@@ -15,7 +15,7 @@ import eu.albertvila.popularmovies.stage2.data.repository.ShowMovieCriteria;
 /**
  * Created by Albert Vila Calvo on 4/1/16.
  */
-public class MovieTypeDialog extends DialogFragment {
+public class ShowMovieCriteriaDialog extends DialogFragment {
 
     // This dialog receives current sort order as fragment arguments
     private static final String ARG_CURRENT_SHOW_MOVIE_CRITERIA = "current_show_movie_criteria";
@@ -23,11 +23,11 @@ public class MovieTypeDialog extends DialogFragment {
     // Used to pass selected position back to fragment
     public static final String EXTRA_SELECTED_SHOW_MOVIE_CRITERIA = "eu.albertvila.popularmovies.stage2.selected_show_movie_criteria";
 
-    public static MovieTypeDialog newInstance(ShowMovieCriteria currentCriteria) {
+    public static ShowMovieCriteriaDialog newInstance(ShowMovieCriteria currentCriteria) {
         Bundle args = new Bundle();
         args.putSerializable(ARG_CURRENT_SHOW_MOVIE_CRITERIA, currentCriteria);
 
-        MovieTypeDialog fragment = new MovieTypeDialog();
+        ShowMovieCriteriaDialog fragment = new ShowMovieCriteriaDialog();
         fragment.setArguments(args);
         return fragment;
     }

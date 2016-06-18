@@ -107,11 +107,11 @@ public class MovieListFragment extends Fragment implements MovieList.View {
 
     // Menu item to change the movie type (most popular, best rated or favorites)
 
-    // We make this fragment the target fragment of MovieTypeDialog, and we will receive the
-    // selected position from MovieTypeDialog. See onOptionsItemSelected() below
+    // We make this fragment the target fragment of ShowMovieCriteriaDialog, and we will receive the
+    // selected position from ShowMovieCriteriaDialog. See onOptionsItemSelected() below
     private static final int REQUEST_MOVIE_TYPE = 0;
 
-    // MovieTypeDialog tag (used to identify the DialogFragment in the FragmentManager)
+    // ShowMovieCriteriaDialog tag (used to identify the DialogFragment in the FragmentManager)
     private static final String MOVIE_TYPE_DIALOG_TAG = "MovieTypeDialogTag";
 
     @Override
@@ -126,7 +126,7 @@ public class MovieListFragment extends Fragment implements MovieList.View {
             // Get the current movie type from the MovieRepository
             ShowMovieCriteria currentCriteria = presenter.getShowMovieCriteria();
             // Show Dialog
-            MovieTypeDialog dialog = MovieTypeDialog.newInstance(currentCriteria);
+            ShowMovieCriteriaDialog dialog = ShowMovieCriteriaDialog.newInstance(currentCriteria);
             dialog.setTargetFragment(this, REQUEST_MOVIE_TYPE);
             dialog.show(getFragmentManager(), MOVIE_TYPE_DIALOG_TAG);
             return true;
@@ -134,12 +134,12 @@ public class MovieListFragment extends Fragment implements MovieList.View {
         return super.onOptionsItemSelected(item);
     }
 
-    // Receive the movie type from MovieTypeDialog
+    // Receive the movie type from ShowMovieCriteriaDialog
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_MOVIE_TYPE) {
-            ShowMovieCriteria criteria = (ShowMovieCriteria) data.getSerializableExtra(MovieTypeDialog.EXTRA_SELECTED_SHOW_MOVIE_CRITERIA);
-            Timber.i("MovieTypeDialog selected show movie criteria: %s", criteria);
+            ShowMovieCriteria criteria = (ShowMovieCriteria) data.getSerializableExtra(ShowMovieCriteriaDialog.EXTRA_SELECTED_SHOW_MOVIE_CRITERIA);
+            Timber.i("ShowMovieCriteriaDialog selected show movie criteria: %s", criteria);
             presenter.setShowMovieCriteria(criteria);
         }
     }
