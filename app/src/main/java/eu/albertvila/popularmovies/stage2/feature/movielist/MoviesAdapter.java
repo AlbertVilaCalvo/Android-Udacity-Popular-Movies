@@ -18,7 +18,7 @@ import eu.albertvila.popularmovies.stage2.R;
 import eu.albertvila.popularmovies.stage2.data.model.Movie;
 
 /**
- * Created by Albert Vila Calvo (vilacalvo.albert@gmail.com) on 19/1/16.
+ * Created by Albert Vila Calvo on 19/1/16.
  */
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder> {
     private List<Movie> movies;

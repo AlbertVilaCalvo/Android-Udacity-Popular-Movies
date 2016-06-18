@@ -15,7 +15,7 @@ import java.util.List;
 import rx.functions.Func1;
 
 /**
- * Created by Albert Vila Calvo (vilacalvo.albert@gmail.com) on 19/1/16.
+ * Created by Albert Vila Calvo on 19/1/16.
  */
 
 @AutoValue

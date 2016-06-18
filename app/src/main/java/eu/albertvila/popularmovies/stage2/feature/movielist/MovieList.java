@@ -6,7 +6,7 @@ import eu.albertvila.popularmovies.stage2.data.model.Movie;
 import eu.albertvila.popularmovies.stage2.data.repository.MovieRepository;
 
 /**
- * Created by Albert Vila Calvo (vilacalvo.albert@gmail.com) on 19/1/16.
+ * Created by Albert Vila Calvo on 19/1/16.
  */
 public interface MovieList {
 

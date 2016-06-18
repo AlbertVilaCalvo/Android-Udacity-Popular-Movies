@@ -12,7 +12,7 @@ import rx.Subscription;
 import timber.log.Timber;
 
 /**
- * Created by Albert Vila Calvo (vilacalvo.albert@gmail.com) on 20/1/16.
+ * Created by Albert Vila Calvo on 20/1/16.
  */
 public class MovieListPresenter implements MovieList.Presenter {
 
