@@ -17,10 +17,10 @@ import eu.albertvila.popularmovies.stage2.data.repository.ShowMovieCriteria;
  */
 public class ShowMovieCriteriaDialog extends DialogFragment {
 
-    // This dialog receives current sort order as fragment arguments
+    // This dialog receives current ShowMovieCriteria as a fragment argument from the Fragment that instantiates this dialog
     private static final String ARG_CURRENT_SHOW_MOVIE_CRITERIA = "current_show_movie_criteria";
 
-    // Used to pass selected position back to fragment
+    // Used to pass selected ShowMovieCriteria back to fragment that crated the dialog
     public static final String EXTRA_SELECTED_SHOW_MOVIE_CRITERIA = "eu.albertvila.popularmovies.stage2.selected_show_movie_criteria";
 
     public static ShowMovieCriteriaDialog newInstance(ShowMovieCriteria currentCriteria) {
@@ -51,7 +51,7 @@ public class ShowMovieCriteriaDialog extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int whichButton) {
                         // Send result back to fragment. Note that we must call
-                        // dialog.setTargetFragment(this, REQUEST_SELECTED_POSITION); in fragment
+                        // dialog.setTargetFragment(this, REQUEST_SHOW_MOVIE_CRITERIA); in fragment
                         if (getTargetFragment() == null) {
                             return;
                         }

@@ -108,11 +108,11 @@ public class MovieListFragment extends Fragment implements MovieList.View {
     // Menu item to change the movie type (most popular, best rated or favorites)
 
     // We make this fragment the target fragment of ShowMovieCriteriaDialog, and we will receive the
-    // selected position from ShowMovieCriteriaDialog. See onOptionsItemSelected() below
-    private static final int REQUEST_MOVIE_TYPE = 0;
+    // selected movie criteria from ShowMovieCriteriaDialog. See onOptionsItemSelected() below
+    private static final int REQUEST_SHOW_MOVIE_CRITERIA = 0;
 
-    // ShowMovieCriteriaDialog tag (used to identify the DialogFragment in the FragmentManager)
-    private static final String MOVIE_TYPE_DIALOG_TAG = "MovieTypeDialogTag";
+    // Tag used to identify the DialogFragment ShowMovieCriteriaDialog in the FragmentManager
+    private static final String SHOW_MOVIE_CRITERIA_DIALOG_TAG = "ShowMovieCriteriaDialogTag";
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -123,12 +123,12 @@ public class MovieListFragment extends Fragment implements MovieList.View {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_movie_type) {
-            // Get the current movie type from the MovieRepository
+            // Get the current ShowMovieCriteria from the MovieRepository
             ShowMovieCriteria currentCriteria = presenter.getShowMovieCriteria();
             // Show Dialog
             ShowMovieCriteriaDialog dialog = ShowMovieCriteriaDialog.newInstance(currentCriteria);
-            dialog.setTargetFragment(this, REQUEST_MOVIE_TYPE);
-            dialog.show(getFragmentManager(), MOVIE_TYPE_DIALOG_TAG);
+            dialog.setTargetFragment(this, REQUEST_SHOW_MOVIE_CRITERIA);
+            dialog.show(getFragmentManager(), SHOW_MOVIE_CRITERIA_DIALOG_TAG);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -137,7 +137,7 @@ public class MovieListFragment extends Fragment implements MovieList.View {
     // Receive the movie type from ShowMovieCriteriaDialog
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_MOVIE_TYPE) {
+        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_SHOW_MOVIE_CRITERIA) {
             ShowMovieCriteria criteria = (ShowMovieCriteria) data.getSerializableExtra(ShowMovieCriteriaDialog.EXTRA_SELECTED_SHOW_MOVIE_CRITERIA);
             Timber.i("ShowMovieCriteriaDialog selected show movie criteria: %s", criteria);
             presenter.setShowMovieCriteria(criteria);
