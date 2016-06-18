@@ -33,6 +33,7 @@ public class MemoryMovieRepository implements MovieRepository {
     @Override
     public void setMovieType(@MovieType int type) {
         this.movieType = type;
+        Timber.i("MemoryMovieRepository setMovieType() to %d", type);
     }
 
     @Override

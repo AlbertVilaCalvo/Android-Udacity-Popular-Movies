@@ -137,9 +137,11 @@ public class MovieListFragment extends Fragment implements MovieList.View {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_MOVIE_TYPE) {
-            int selectedPosition = data.getIntExtra(MovieTypeDialog.EXTRA_SELECTED_POSITION, 0);
-            Timber.d("MovieTypeDialog selected position: %d", selectedPosition);
-            // TODO change the movie type
+            // IMPORTANT: THE SELECTED POSITION IS THE SAME AS THE MOVIE TYPE DEFINED IN MovieRepository BECAUSE
+            // MovieTypeDialog SHOWS THE MOVIE TYPES IN THE SAME ORDER
+            @MovieRepository.MovieType int selectedPosition = data.getIntExtra(MovieTypeDialog.EXTRA_SELECTED_POSITION, 0);
+            Timber.i("MovieTypeDialog selected position: %d", selectedPosition);
+            presenter.setMovieType(selectedPosition);
         }
     }
 

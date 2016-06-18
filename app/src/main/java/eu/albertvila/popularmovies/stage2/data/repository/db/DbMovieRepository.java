@@ -43,6 +43,7 @@ public class DbMovieRepository implements MovieRepository {
     @Override
     public void setMovieType(@MovieType int type) {
         this.movieType = type;
+        Timber.i("DbMovieRepository setMovieType() to %d", type);
     }
 
     @Override
