@@ -22,13 +22,11 @@ public class MemoryMovieRepository implements MovieRepository {
     private String apiKey;
     private ShowMovieCriteria showMovieCriteria;
 
-    public MemoryMovieRepository(MovieDbService movieDbService, String apiKey) {
+    public MemoryMovieRepository(MovieDbService movieDbService, String apiKey, ShowMovieCriteria defaultCriteria) {
         Timber.i("New MemoryMovieRepository created");
         this.movieDbService = movieDbService;
         this.apiKey = apiKey;
-
-        // Default value
-        this.showMovieCriteria = ShowMovieCriteria.MOST_POPULAR;
+        this.showMovieCriteria = defaultCriteria;
     }
 
     @Override
@@ -39,7 +37,7 @@ public class MemoryMovieRepository implements MovieRepository {
 
     @Override
     public Observable<List<Movie>> observeMovies() {
-        // TODO We are ignoring movieType for now -> fix
+        // TODO We are ignoring ShowMovieCriteria for now -> fix
         Observable<DiscoverMoviesResponse> observable = movieDbService.discoverMoviesRx(apiKey, MovieDbService.SORT_BY_POPULARITY);
 
         return observable

@@ -31,14 +31,12 @@ public class DbMovieRepository implements MovieRepository {
     private BriteDatabase db;
     private ShowMovieCriteria showMovieCriteria;
 
-    public DbMovieRepository(MovieDbService movieDbService, String apiKey, BriteDatabase db) {
+    public DbMovieRepository(MovieDbService movieDbService, String apiKey, ShowMovieCriteria defaultCriteria, BriteDatabase db) {
         Timber.i("New DbMovieRepository created");
         this.movieDbService = movieDbService;
         this.apiKey = apiKey;
+        this.showMovieCriteria = defaultCriteria;
         this.db = db;
-
-        // Default value
-        this.showMovieCriteria = ShowMovieCriteria.MOST_POPULAR;
     }
 
     @Override
@@ -54,7 +52,7 @@ public class DbMovieRepository implements MovieRepository {
                 .doOnSubscribe(new Action0() {
                     @Override
                     public void call() {
-                        // TODO We are ignoring movieType for now -> fix
+                        // TODO We are ignoring ShowMovieCriteria for now -> fix
                         fetchMovies(MovieDbService.SORT_BY_POPULARITY);
                     }
                 })
