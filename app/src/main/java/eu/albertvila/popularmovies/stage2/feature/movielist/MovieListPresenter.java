@@ -6,6 +6,7 @@ import java.util.List;
 
 import eu.albertvila.popularmovies.stage2.data.model.Movie;
 import eu.albertvila.popularmovies.stage2.data.repository.MovieRepository;
+import eu.albertvila.popularmovies.stage2.data.repository.ShowMovieCriteria;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
@@ -43,8 +44,8 @@ public class MovieListPresenter implements MovieList.Presenter {
     }
 
     @Override
-    public void setMovieType(@MovieRepository.MovieType int type) {
-        movieRepository.setMovieType(type);
+    public void setShowMovieCriteria(ShowMovieCriteria criteria) {
+        movieRepository.setShowMovieCriteria(criteria);
     }
 
     // TODO watch this videos

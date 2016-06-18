@@ -12,6 +12,7 @@ import eu.albertvila.popularmovies.stage2.data.api.DiscoverMoviesResponse;
 import eu.albertvila.popularmovies.stage2.data.api.MovieDbService;
 import eu.albertvila.popularmovies.stage2.data.model.Movie;
 import eu.albertvila.popularmovies.stage2.data.repository.MovieRepository;
+import eu.albertvila.popularmovies.stage2.data.repository.ShowMovieCriteria;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -28,7 +29,7 @@ public class DbMovieRepository implements MovieRepository {
     private MovieDbService movieDbService;
     private String apiKey;
     private BriteDatabase db;
-    private @MovieType int movieType;
+    private ShowMovieCriteria showMovieCriteria;
 
     public DbMovieRepository(MovieDbService movieDbService, String apiKey, BriteDatabase db) {
         Timber.i("New DbMovieRepository created");
@@ -37,13 +38,13 @@ public class DbMovieRepository implements MovieRepository {
         this.db = db;
 
         // Default value
-        this.movieType = TYPE_MOST_POPULAR;
+        this.showMovieCriteria = ShowMovieCriteria.MOST_POPULAR;
     }
 
     @Override
-    public void setMovieType(@MovieType int type) {
-        this.movieType = type;
-        Timber.i("DbMovieRepository setMovieType() to %d", type);
+    public void setShowMovieCriteria(ShowMovieCriteria criteria) {
+        this.showMovieCriteria = criteria;
+        Timber.i("DbMovieRepository setShowMovieCriteria() to %s", criteria);
     }
 
     @Override

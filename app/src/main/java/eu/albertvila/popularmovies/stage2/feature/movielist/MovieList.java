@@ -3,7 +3,7 @@ package eu.albertvila.popularmovies.stage2.feature.movielist;
 import java.util.List;
 
 import eu.albertvila.popularmovies.stage2.data.model.Movie;
-import eu.albertvila.popularmovies.stage2.data.repository.MovieRepository;
+import eu.albertvila.popularmovies.stage2.data.repository.ShowMovieCriteria;
 
 /**
  * Created by Albert Vila Calvo on 19/1/16.
@@ -18,7 +18,7 @@ public interface MovieList {
     interface Presenter {
         void start(MovieList.View view);
         void stop();
-        void setMovieType(@MovieRepository.MovieType int type);
+        void setShowMovieCriteria(ShowMovieCriteria criteria);
     }
 
 }

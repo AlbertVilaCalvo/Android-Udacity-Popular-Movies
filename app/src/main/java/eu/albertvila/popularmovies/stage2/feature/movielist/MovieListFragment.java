@@ -25,7 +25,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import eu.albertvila.popularmovies.stage2.R;
 import eu.albertvila.popularmovies.stage2.data.model.Movie;
-import eu.albertvila.popularmovies.stage2.data.repository.MovieRepository;
+import eu.albertvila.popularmovies.stage2.data.repository.ShowMovieCriteria;
 import eu.albertvila.popularmovies.stage2.misc.App;
 import eu.albertvila.popularmovies.stage2.misc.recyclerview.AutofitGridLayoutManager;
 import timber.log.Timber;
@@ -124,8 +124,9 @@ public class MovieListFragment extends Fragment implements MovieList.View {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_movie_type) {
             // TODO Get the current movie type from the MovieRepository
+            ShowMovieCriteria currentCriteria = ShowMovieCriteria.BEST_RATED;
             // Show Dialog
-            MovieTypeDialog dialog = MovieTypeDialog.newInstance(MovieRepository.TYPE_MOST_POPULAR);
+            MovieTypeDialog dialog = MovieTypeDialog.newInstance(currentCriteria);
             dialog.setTargetFragment(this, REQUEST_MOVIE_TYPE);
             dialog.show(getFragmentManager(), MOVIE_TYPE_DIALOG_TAG);
             return true;
@@ -137,11 +138,9 @@ public class MovieListFragment extends Fragment implements MovieList.View {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_MOVIE_TYPE) {
-            // IMPORTANT: THE SELECTED POSITION IS THE SAME AS THE MOVIE TYPE DEFINED IN MovieRepository BECAUSE
-            // MovieTypeDialog SHOWS THE MOVIE TYPES IN THE SAME ORDER
-            @MovieRepository.MovieType int selectedPosition = data.getIntExtra(MovieTypeDialog.EXTRA_SELECTED_POSITION, 0);
-            Timber.i("MovieTypeDialog selected position: %d", selectedPosition);
-            presenter.setMovieType(selectedPosition);
+            ShowMovieCriteria criteria = (ShowMovieCriteria) data.getSerializableExtra(MovieTypeDialog.EXTRA_SELECTED_SHOW_MOVIE_CRITERIA);
+            Timber.i("MovieTypeDialog selected show movie criteria: %s", criteria);
+            presenter.setShowMovieCriteria(criteria);
         }
     }
 

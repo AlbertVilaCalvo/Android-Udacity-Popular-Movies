@@ -6,6 +6,7 @@ import eu.albertvila.popularmovies.stage2.data.api.DiscoverMoviesResponse;
 import eu.albertvila.popularmovies.stage2.data.api.MovieDbService;
 import eu.albertvila.popularmovies.stage2.data.model.Movie;
 import eu.albertvila.popularmovies.stage2.data.repository.MovieRepository;
+import eu.albertvila.popularmovies.stage2.data.repository.ShowMovieCriteria;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
@@ -19,7 +20,7 @@ public class MemoryMovieRepository implements MovieRepository {
 
     private MovieDbService movieDbService;
     private String apiKey;
-    private @MovieType int movieType;
+    private ShowMovieCriteria showMovieCriteria;
 
     public MemoryMovieRepository(MovieDbService movieDbService, String apiKey) {
         Timber.i("New MemoryMovieRepository created");
@@ -27,13 +28,13 @@ public class MemoryMovieRepository implements MovieRepository {
         this.apiKey = apiKey;
 
         // Default value
-        this.movieType = TYPE_MOST_POPULAR;
+        this.showMovieCriteria = ShowMovieCriteria.MOST_POPULAR;
     }
 
     @Override
-    public void setMovieType(@MovieType int type) {
-        this.movieType = type;
-        Timber.i("MemoryMovieRepository setMovieType() to %d", type);
+    public void setShowMovieCriteria(ShowMovieCriteria criteria) {
+        this.showMovieCriteria = criteria;
+        Timber.i("MemoryMovieRepository setShowMovieCriteria() to %s", criteria);
     }
 
     @Override
