@@ -1,4 +1,20 @@
 <resources>
     <string name="app_name">Popular Movies 2</string>
+
+    <!-- Menu items -->
     <string name="action_settings">Settings</string>
+    <string name="action_movie_type">Movie Type</string>
+
+    <!-- Movie type dialog -->
+    <string-array name="movie_type_options">
+        <item>@string/most_popular</item>
+        <item>@string/best_rated</item>
+        <item>@string/favorites</item>
+    </string-array>
+    <string name="most_popular">Most Popular</string>
+    <string name="best_rated">Best Rated</string>
+    <string name="favorites">Favorites</string>
+    <string name="button_positive">OK</string>
+    <string name="button_negative">Cancel</string>
+
 </resources>
