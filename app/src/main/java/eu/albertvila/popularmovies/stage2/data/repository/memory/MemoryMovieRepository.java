@@ -19,16 +19,26 @@ public class MemoryMovieRepository implements MovieRepository {
 
     private MovieDbService movieDbService;
     private String apiKey;
+    private @MovieType int movieType;
 
     public MemoryMovieRepository(MovieDbService movieDbService, String apiKey) {
         Timber.i("New MemoryMovieRepository created");
         this.movieDbService = movieDbService;
         this.apiKey = apiKey;
+
+        // Default value
+        this.movieType = TYPE_MOST_POPULAR;
     }
 
     @Override
-    public Observable<List<Movie>> getMovies(String sortOrder) {
-        Observable<DiscoverMoviesResponse> observable = movieDbService.discoverMoviesRx(apiKey, sortOrder);
+    public void setMovieType(@MovieType int type) {
+        this.movieType = type;
+    }
+
+    @Override
+    public Observable<List<Movie>> observeMovies() {
+        // TODO We are ignoring movieType for now -> fix
+        Observable<DiscoverMoviesResponse> observable = movieDbService.discoverMoviesRx(apiKey, MovieDbService.SORT_BY_POPULARITY);
 
         return observable
                 .subscribeOn(Schedulers.io())

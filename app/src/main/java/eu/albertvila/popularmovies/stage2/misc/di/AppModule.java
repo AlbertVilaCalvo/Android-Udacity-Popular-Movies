@@ -41,7 +41,7 @@ public class AppModule {
     }
 
     @Provides
-    public MovieList.Presenter provideMovieListPresenter(@Named("db") MovieRepository movieRepository) {
+    public MovieList.Presenter provideMovieListPresenter(@Named("memory") MovieRepository movieRepository) {
         return new MovieListPresenter(movieRepository);
     }
 

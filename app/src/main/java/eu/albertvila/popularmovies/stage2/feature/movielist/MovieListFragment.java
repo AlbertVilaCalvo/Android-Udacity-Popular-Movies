@@ -48,8 +48,6 @@ public class MovieListFragment extends Fragment implements MovieList.View {
         // ((App) getActivity().getApplication()).getAppComponent().inject(this);
         App.getComponent(getActivity()).inject(this);
 
-        presenter.setView(this);
-
         adapter = new MoviesAdapter(movies);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new AutofitGridLayoutManager(getActivity(), R.dimen.movie_grid_min_column_width));
@@ -80,8 +78,7 @@ public class MovieListFragment extends Fragment implements MovieList.View {
     public void onResume() {
         super.onResume();
 
-        presenter.setView(this);
-        presenter.getMovies();
+        presenter.start(this);
     }
 
     @Override

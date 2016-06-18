@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 
 import java.util.List;
 
-import eu.albertvila.popularmovies.stage2.data.api.MovieDbService;
 import eu.albertvila.popularmovies.stage2.data.model.Movie;
 import eu.albertvila.popularmovies.stage2.data.repository.MovieRepository;
 import rx.Observable;
@@ -29,8 +28,9 @@ public class MovieListPresenter implements MovieList.Presenter {
     // MovieList.Presenter
 
     @Override
-    public void setView(@NonNull MovieList.View view) {
+    public void start(@NonNull MovieList.View view) {
         this.view = view;
+        getMovies();
     }
 
     @Override
@@ -42,13 +42,17 @@ public class MovieListPresenter implements MovieList.Presenter {
         }
     }
 
+    @Override
+    public void setMovieType(@MovieRepository.MovieType int type) {
+        movieRepository.setMovieType(type);
+    }
+
     // TODO watch this videos
     // https://caster.io/episodes/retrofit2-with-rxjava/
     // https://caster.io/courses/rxjava/
 
-    @Override
     public void getMovies() {
-        Observable<List<Movie>> observable = movieRepository.getMovies(MovieDbService.SORT_BY_POPULARITY);
+        Observable<List<Movie>> observable = movieRepository.observeMovies();
 
         subscription = observable.subscribe(new Subscriber<List<Movie>>() {
             @Override

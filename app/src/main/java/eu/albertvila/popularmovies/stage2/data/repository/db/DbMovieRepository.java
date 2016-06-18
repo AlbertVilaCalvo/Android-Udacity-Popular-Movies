@@ -28,22 +28,32 @@ public class DbMovieRepository implements MovieRepository {
     private MovieDbService movieDbService;
     private String apiKey;
     private BriteDatabase db;
+    private @MovieType int movieType;
 
     public DbMovieRepository(MovieDbService movieDbService, String apiKey, BriteDatabase db) {
         Timber.i("New DbMovieRepository created");
         this.movieDbService = movieDbService;
         this.apiKey = apiKey;
         this.db = db;
+
+        // Default value
+        this.movieType = TYPE_MOST_POPULAR;
     }
 
     @Override
-    public Observable<List<Movie>> getMovies(final String sortOrder) {
+    public void setMovieType(@MovieType int type) {
+        this.movieType = type;
+    }
+
+    @Override
+    public Observable<List<Movie>> observeMovies() {
         Observable<SqlBrite.Query> moviesQuery = db.createQuery(Movie.TABLE, "SELECT * FROM " + Movie.TABLE);
         return moviesQuery
                 .doOnSubscribe(new Action0() {
                     @Override
                     public void call() {
-                        fetchMovies(sortOrder);
+                        // TODO We are ignoring movieType for now -> fix
+                        fetchMovies(MovieDbService.SORT_BY_POPULARITY);
                     }
                 })
                 .map(Movie.QUERY_TO_LIST_MAPPER)
