@@ -36,6 +36,11 @@ public class MemoryMovieRepository implements MovieRepository {
     }
 
     @Override
+    public ShowMovieCriteria getShowMovieCriteria() {
+        return showMovieCriteria;
+    }
+
+    @Override
     public Observable<List<Movie>> observeMovies() {
         // TODO We are ignoring ShowMovieCriteria for now -> fix
         Observable<DiscoverMoviesResponse> observable = movieDbService.discoverMoviesRx(apiKey, MovieDbService.SORT_BY_POPULARITY);

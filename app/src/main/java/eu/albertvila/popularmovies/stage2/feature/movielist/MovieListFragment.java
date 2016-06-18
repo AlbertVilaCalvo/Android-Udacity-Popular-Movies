@@ -123,8 +123,8 @@ public class MovieListFragment extends Fragment implements MovieList.View {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_movie_type) {
-            // TODO Get the current movie type from the MovieRepository
-            ShowMovieCriteria currentCriteria = ShowMovieCriteria.BEST_RATED;
+            // Get the current movie type from the MovieRepository
+            ShowMovieCriteria currentCriteria = presenter.getShowMovieCriteria();
             // Show Dialog
             MovieTypeDialog dialog = MovieTypeDialog.newInstance(currentCriteria);
             dialog.setTargetFragment(this, REQUEST_MOVIE_TYPE);

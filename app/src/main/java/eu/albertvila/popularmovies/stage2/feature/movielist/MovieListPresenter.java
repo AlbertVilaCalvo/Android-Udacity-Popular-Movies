@@ -48,6 +48,11 @@ public class MovieListPresenter implements MovieList.Presenter {
         movieRepository.setShowMovieCriteria(criteria);
     }
 
+    @Override
+    public ShowMovieCriteria getShowMovieCriteria() {
+        return movieRepository.getShowMovieCriteria();
+    }
+
     // TODO watch this videos
     // https://caster.io/episodes/retrofit2-with-rxjava/
     // https://caster.io/courses/rxjava/

@@ -19,6 +19,7 @@ public interface MovieList {
         void start(MovieList.View view);
         void stop();
         void setShowMovieCriteria(ShowMovieCriteria criteria);
+        ShowMovieCriteria getShowMovieCriteria();
     }
 
 }

@@ -12,6 +12,8 @@ public interface MovieRepository {
 
     void setShowMovieCriteria(ShowMovieCriteria criteria);
 
+    ShowMovieCriteria getShowMovieCriteria();
+
     Observable<List<Movie>> observeMovies();
 
 }

@@ -46,6 +46,11 @@ public class DbMovieRepository implements MovieRepository {
     }
 
     @Override
+    public ShowMovieCriteria getShowMovieCriteria() {
+        return showMovieCriteria;
+    }
+
+    @Override
     public Observable<List<Movie>> observeMovies() {
         Observable<SqlBrite.Query> moviesQuery = db.createQuery(Movie.TABLE, "SELECT * FROM " + Movie.TABLE);
         return moviesQuery
