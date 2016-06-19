@@ -61,6 +61,7 @@ public class DbMovieRepository implements MovieRepository {
                         fetchMovies(MovieDbService.SORT_BY_POPULARITY);
                     }
                 })
+                // We could also use mapToList
                 .map(Movie.QUERY_TO_LIST_MAPPER)
                 .observeOn(AndroidSchedulers.mainThread());
     }
