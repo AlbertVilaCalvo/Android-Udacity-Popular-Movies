@@ -52,13 +52,13 @@ public class DbMovieRepository implements MovieRepository {
 
     @Override
     public Observable<List<Movie>> observeMovies() {
+        // TODO We are ignoring ShowMovieCriteria for now -> fix
         Observable<SqlBrite.Query> moviesQuery = db.createQuery(Movie.TABLE, "SELECT * FROM " + Movie.TABLE);
         return moviesQuery
                 .doOnSubscribe(new Action0() {
                     @Override
                     public void call() {
-                        // TODO We are ignoring ShowMovieCriteria for now -> fix
-                        fetchMovies(MovieDbService.SORT_BY_POPULARITY);
+                        fetchMovies();
                     }
                 })
                 // We could also use mapToList
@@ -66,7 +66,13 @@ public class DbMovieRepository implements MovieRepository {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    private void fetchMovies(String sortOrder) {
+    private void fetchMovies() {
+        // Note: if showMovieCriteria is ShowMovieCriteria.FAVORITES, we fetch the movies by popularity
+        String sortOrder = MovieDbService.SORT_BY_POPULARITY;
+        if (showMovieCriteria == ShowMovieCriteria.BEST_RATED) {
+            sortOrder = MovieDbService.SORT_BY_RATING;
+        }
+
         Call<DiscoverMoviesResponse> call = movieDbService.discoverMovies(apiKey, sortOrder);
         call.enqueue(new Callback<DiscoverMoviesResponse>() {
             @Override
