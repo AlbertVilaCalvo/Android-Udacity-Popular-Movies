@@ -122,7 +122,7 @@ public class MovieListFragment extends Fragment implements MovieList.View {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_movie_type) {
+        if (item.getItemId() == R.id.action_show_movie_criteria) {
             // Get the current ShowMovieCriteria from the MovieRepository
             ShowMovieCriteria currentCriteria = presenter.getShowMovieCriteria();
             // Show Dialog

@@ -44,7 +44,7 @@ public class ShowMovieCriteriaDialog extends DialogFragment {
         }
 
         return new AlertDialog.Builder(getActivity())
-                .setTitle(R.string.action_movie_type)
+                .setTitle(R.string.action_show_movie_criteria)
                 .setSingleChoiceItems(R.array.movie_type_options, checkedItem, null)
                 .setNegativeButton(R.string.button_negative, null)
                 .setPositiveButton(R.string.button_positive, new DialogInterface.OnClickListener() {

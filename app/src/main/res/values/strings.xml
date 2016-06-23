@@ -3,7 +3,7 @@
 
     <!-- Menu items -->
     <string name="action_settings">Settings</string>
-    <string name="action_movie_type">Movie Type</string>
+    <string name="action_show_movie_criteria">Criteria</string>
 
     <!-- Movie type dialog -->
     <string-array name="movie_type_options">
