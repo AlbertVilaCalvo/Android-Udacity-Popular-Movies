@@ -49,8 +49,11 @@ public class MovieListPresenter implements MovieList.Presenter {
     }
 
     @Override
-    public ShowMovieCriteria getShowMovieCriteria() {
-        return movieRepository.getShowMovieCriteria();
+    public void menuItemShowMovieCriteriaClick() {
+        if (view != null) {
+            ShowMovieCriteria criteria = movieRepository.getShowMovieCriteria();
+            view.showMovieCriteriaDialog(criteria);
+        }
     }
 
     // TODO watch this videos

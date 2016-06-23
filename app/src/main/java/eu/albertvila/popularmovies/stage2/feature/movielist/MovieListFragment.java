@@ -123,15 +123,17 @@ public class MovieListFragment extends Fragment implements MovieList.View {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_show_movie_criteria) {
-            // Get the current ShowMovieCriteria from the MovieRepository
-            ShowMovieCriteria currentCriteria = presenter.getShowMovieCriteria();
-            // Show Dialog
-            ShowMovieCriteriaDialog dialog = ShowMovieCriteriaDialog.newInstance(currentCriteria);
-            dialog.setTargetFragment(this, REQUEST_SHOW_MOVIE_CRITERIA);
-            dialog.show(getFragmentManager(), SHOW_MOVIE_CRITERIA_DIALOG_TAG);
+            presenter.menuItemShowMovieCriteriaClick();
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void showMovieCriteriaDialog(ShowMovieCriteria criteria) {
+        ShowMovieCriteriaDialog dialog = ShowMovieCriteriaDialog.newInstance(criteria);
+        dialog.setTargetFragment(this, REQUEST_SHOW_MOVIE_CRITERIA);
+        dialog.show(getFragmentManager(), SHOW_MOVIE_CRITERIA_DIALOG_TAG);
     }
 
     // Receive the movie type from ShowMovieCriteriaDialog

@@ -13,13 +13,14 @@ public interface MovieList {
     interface View {
         void showMovies(List<Movie> movies);
         void showProgress();
+        void showMovieCriteriaDialog(ShowMovieCriteria criteria);
     }
 
     interface Presenter {
         void start(MovieList.View view);
         void stop();
         void setShowMovieCriteria(ShowMovieCriteria criteria);
-        ShowMovieCriteria getShowMovieCriteria();
+        void menuItemShowMovieCriteriaClick();
     }
 
 }
