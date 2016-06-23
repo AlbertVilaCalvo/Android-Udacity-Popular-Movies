@@ -85,4 +85,5 @@ public class MovieListPresenter implements MovieList.Presenter {
             }
         });
     }
+
 }

@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.facebook.stetho.Stetho;
 import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
 
 import eu.albertvila.popularmovies.stage2.BuildConfig;
 import eu.albertvila.popularmovies.stage2.misc.di.AppComponent;
@@ -18,6 +19,9 @@ import timber.log.Timber;
 public class App extends Application {
 
     private AppComponent appComponent;
+
+    // For LeakCanary
+    private RefWatcher refWatcher;
 
     @Override
     public void onCreate() {
@@ -39,7 +43,7 @@ public class App extends Application {
             Stetho.initializeWithDefaults(this);
             Timber.plant(new StethoTree());
 
-            LeakCanary.install(this);
+            refWatcher = LeakCanary.install(this);
         }
     }
 
@@ -49,6 +53,10 @@ public class App extends Application {
 
     public static AppComponent getComponent(Context context) {
         return ((App) context.getApplicationContext()).appComponent;
+    }
+
+    public static RefWatcher getRefWatcher(Context context) {
+        return ((App) context.getApplicationContext()).refWatcher;
     }
 
 }
