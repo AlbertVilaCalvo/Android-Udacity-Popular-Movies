@@ -44,8 +44,8 @@ public class MovieListPresenter implements MovieList.Presenter {
     }
 
     @Override
-    public void setShowMovieCriteria(ShowMovieCriteria criteria) {
-        movieRepository.setShowMovieCriteria(criteria);
+    public void newShowMovieCriteriaSelected(ShowMovieCriteria newCriteria) {
+        movieRepository.setShowMovieCriteria(newCriteria);
     }
 
     @Override

@@ -140,9 +140,9 @@ public class MovieListFragment extends Fragment implements MovieList.View {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_SHOW_MOVIE_CRITERIA) {
-            ShowMovieCriteria criteria = (ShowMovieCriteria) data.getSerializableExtra(ShowMovieCriteriaDialog.EXTRA_SELECTED_SHOW_MOVIE_CRITERIA);
-            Timber.i("ShowMovieCriteriaDialog selected show movie criteria: %s", criteria);
-            presenter.setShowMovieCriteria(criteria);
+            ShowMovieCriteria newCriteria = (ShowMovieCriteria) data.getSerializableExtra(ShowMovieCriteriaDialog.EXTRA_SELECTED_SHOW_MOVIE_CRITERIA);
+            Timber.i("ShowMovieCriteriaDialog selected show movie criteria: %s", newCriteria);
+            presenter.newShowMovieCriteriaSelected(newCriteria);
         }
     }
 

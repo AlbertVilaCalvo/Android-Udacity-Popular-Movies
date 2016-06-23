@@ -19,7 +19,7 @@ public interface MovieList {
     interface Presenter {
         void start(MovieList.View view);
         void stop();
-        void setShowMovieCriteria(ShowMovieCriteria criteria);
+        void newShowMovieCriteriaSelected(ShowMovieCriteria newCriteria);
         void menuItemShowMovieCriteriaClick();
     }
 
