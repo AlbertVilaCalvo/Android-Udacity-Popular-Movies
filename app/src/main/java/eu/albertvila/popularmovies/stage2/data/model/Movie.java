@@ -28,6 +28,7 @@ public abstract class Movie {
     public static final String ID = "_id";
     public static final String ORIGINAL_TITLE = "original_title";
     public static final String POSTER_PATH = "poster_path";
+    public static final String POPULARITY = "popularity";
 
     public abstract long id();
 
@@ -42,6 +43,7 @@ public abstract class Movie {
         return "http://image.tmdb.org/t/p/w185" + posterPath();
     }
 
+    public abstract float popularity();
 
     // https://github.com/rharter/auto-value-gson
     // The public static method returning a TypeAdapter<Foo> is what
@@ -60,7 +62,8 @@ public abstract class Movie {
                     long id = cursor.getLong(cursor.getColumnIndexOrThrow(Movie.ID));
                     String title = cursor.getString(cursor.getColumnIndexOrThrow(Movie.ORIGINAL_TITLE));
                     String posterPath = cursor.getString(cursor.getColumnIndexOrThrow(Movie.POSTER_PATH));
-                    Movie movie = new AutoValue_Movie(id, title, posterPath);
+                    float popularity = cursor.getFloat(cursor.getColumnIndexOrThrow(Movie.POPULARITY));
+                    Movie movie = new AutoValue_Movie(id, title, posterPath, popularity);
                     movies.add(movie);
                 }
                 return movies;
@@ -71,14 +74,15 @@ public abstract class Movie {
     };
 
     public static ContentValues buildContentValues(Movie movie) {
-        return buildContentValues(movie.id(), movie.originalTitle(), movie.posterPath());
+        return buildContentValues(movie.id(), movie.originalTitle(), movie.posterPath(), movie.popularity());
     }
 
-    public static ContentValues buildContentValues(long id, String originalTitle, String posterPath) {
+    public static ContentValues buildContentValues(long id, String originalTitle, String posterPath, float popularity) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(ID, id);
         contentValues.put(ORIGINAL_TITLE, originalTitle);
         contentValues.put(POSTER_PATH, posterPath);
+        contentValues.put(POPULARITY, popularity);
         return contentValues;
     }
 

@@ -109,6 +109,7 @@ public class MovieListFragment extends Fragment implements MovieList.View {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        // LeakCanary
         RefWatcher refWatcher = App.getRefWatcher(getActivity());
         refWatcher.watch(this);
     }
