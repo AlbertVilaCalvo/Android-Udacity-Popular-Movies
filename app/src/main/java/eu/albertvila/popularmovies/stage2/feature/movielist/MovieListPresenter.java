@@ -37,10 +37,7 @@ public class MovieListPresenter implements MovieList.Presenter {
     @Override
     public void stop() {
         this.view = null;
-        if (subscription != null && !subscription.isUnsubscribed()) {
-            subscription.unsubscribe();
-            Timber.i("MovieListPresenter stop() subscription.unsubscribe()");
-        }
+        unsubscribe();
     }
 
     @Override
@@ -84,6 +81,12 @@ public class MovieListPresenter implements MovieList.Presenter {
                 }
             }
         });
+
+    private void unsubscribe() {
+        if (subscription != null && !subscription.isUnsubscribed()) {
+            subscription.unsubscribe();
+            Timber.i("MovieListPresenter subscription.unsubscribe()");
+        }
     }
 
 }
