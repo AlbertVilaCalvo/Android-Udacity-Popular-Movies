@@ -72,15 +72,28 @@ public class MovieListPresenter implements MovieList.Presenter {
             .map(new Func1<List<Movie>, List<Movie>>() {
                 @Override
                 public List<Movie> call(List<Movie> movies) {
-                    // TODO sort by rating
-                    // movieRepository.getShowMovieCriteria();
+                    // If we have to show the favorite movies, don't sort them
+                    if (movieRepository.getShowMovieCriteria() == ShowMovieCriteria.FAVORITES) {
+                        return movies;
+                    }
+
+                    // Sort by popularity or by rating
                     List<Movie> sortedMovies = new ArrayList<Movie>(movies);
-                    Collections.sort(sortedMovies, new Comparator<Movie>() {
-                        @Override
-                        public int compare(Movie m1, Movie m2) {
-                            return m1.popularity() > m2.popularity() ? -1 : 1;
-                        }
-                    });
+                    if (movieRepository.getShowMovieCriteria() == ShowMovieCriteria.MOST_POPULAR) {
+                        Collections.sort(sortedMovies, new Comparator<Movie>() {
+                            @Override
+                            public int compare(Movie m1, Movie m2) {
+                                return m1.popularity() > m2.popularity() ? -1 : 1;
+                            }
+                        });
+                    } else if (movieRepository.getShowMovieCriteria() == ShowMovieCriteria.BEST_RATED) {
+                        Collections.sort(sortedMovies, new Comparator<Movie>() {
+                            @Override
+                            public int compare(Movie m1, Movie m2) {
+                                return m1.rating() > m2.rating() ? -1 : 1;
+                            }
+                        });
+                    }
                     return sortedMovies;
                 }
             })
