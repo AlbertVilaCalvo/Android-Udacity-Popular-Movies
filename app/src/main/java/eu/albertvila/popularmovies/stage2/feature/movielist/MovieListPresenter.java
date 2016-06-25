@@ -13,6 +13,7 @@ import eu.albertvila.popularmovies.stage2.data.repository.ShowMovieCriteria;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
+import rx.functions.Action1;
 import rx.functions.Func1;
 import timber.log.Timber;
 
@@ -95,6 +96,20 @@ public class MovieListPresenter implements MovieList.Presenter {
                         });
                     }
                     return sortedMovies;
+                }
+            })
+            // To debug
+            .doOnNext(new Action1<List<Movie>>() {
+                @Override
+                public void call(List<Movie> movies) {
+                    for (Movie movie : movies) {
+                        if (movieRepository.getShowMovieCriteria() == ShowMovieCriteria.BEST_RATED) {
+                            Timber.i("rating %f\t\t\t%s", movie.rating(), movie.originalTitle());
+                        }
+                        if (movieRepository.getShowMovieCriteria() == ShowMovieCriteria.MOST_POPULAR) {
+                            Timber.i("popularity %f\t\t\t%s", movie.popularity(), movie.originalTitle());
+                        }
+                    }
                 }
             })
             .subscribe(new Subscriber<List<Movie>>() {
