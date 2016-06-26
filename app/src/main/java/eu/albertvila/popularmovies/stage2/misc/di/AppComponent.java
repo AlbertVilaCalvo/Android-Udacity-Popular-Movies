@@ -5,6 +5,7 @@ import javax.inject.Singleton;
 import dagger.Component;
 import eu.albertvila.popularmovies.stage2.data.api.ApiModule;
 import eu.albertvila.popularmovies.stage2.data.repository.db.DbModule;
+import eu.albertvila.popularmovies.stage2.feature.moviedetail.MovieDetailFragment;
 import eu.albertvila.popularmovies.stage2.feature.movielist.MovieListFragment;
 
 /**
@@ -16,5 +17,6 @@ import eu.albertvila.popularmovies.stage2.feature.movielist.MovieListFragment;
 public interface AppComponent {
 
     void inject(MovieListFragment target);
+    void inject(MovieDetailFragment target);
 
 }

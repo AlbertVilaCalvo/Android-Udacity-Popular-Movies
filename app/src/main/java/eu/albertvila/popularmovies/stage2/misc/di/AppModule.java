@@ -12,10 +12,12 @@ import dagger.Module;
 import dagger.Provides;
 import eu.albertvila.popularmovies.stage2.data.api.ApiModule;
 import eu.albertvila.popularmovies.stage2.data.api.MovieDbService;
-import eu.albertvila.popularmovies.stage2.data.repository.ShowMovieCriteria;
-import eu.albertvila.popularmovies.stage2.data.repository.memory.MemoryMovieRepository;
 import eu.albertvila.popularmovies.stage2.data.repository.MovieRepository;
+import eu.albertvila.popularmovies.stage2.data.repository.ShowMovieCriteria;
 import eu.albertvila.popularmovies.stage2.data.repository.db.DbMovieRepository;
+import eu.albertvila.popularmovies.stage2.data.repository.memory.MemoryMovieRepository;
+import eu.albertvila.popularmovies.stage2.feature.moviedetail.MovieDetail;
+import eu.albertvila.popularmovies.stage2.feature.moviedetail.MovieDetailPresenter;
 import eu.albertvila.popularmovies.stage2.feature.movielist.MovieList;
 import eu.albertvila.popularmovies.stage2.feature.movielist.MovieListPresenter;
 
@@ -44,6 +46,11 @@ public class AppModule {
     @Provides
     public MovieList.Presenter provideMovieListPresenter(@Named("db") MovieRepository movieRepository) {
         return new MovieListPresenter(movieRepository);
+    }
+
+    @Provides
+    public MovieDetail.Presenter provideMovieDetailPresenter(@Named("db") MovieRepository movieRepository) {
+        return new MovieDetailPresenter(movieRepository);
     }
 
     // The default (initial) ShowMovieCriteria value used when the app starts
