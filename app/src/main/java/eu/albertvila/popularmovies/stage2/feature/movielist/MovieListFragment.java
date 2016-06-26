@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -43,6 +45,8 @@ public class MovieListFragment extends Fragment implements MovieList.View {
 
     private Unbinder unbinder;
 
+    @BindView(R.id.toolbar) Toolbar toolbar;
+
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
     @BindView(R.id.progressWheel) ProgressWheel progressWheel;
 
@@ -55,6 +59,9 @@ public class MovieListFragment extends Fragment implements MovieList.View {
 
         // ((App) getActivity().getApplication()).getAppComponent().inject(this);
         App.getComponent(getActivity()).inject(this);
+
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.setSupportActionBar(toolbar);
 
         setHasOptionsMenu(true);
 
@@ -103,12 +110,14 @@ public class MovieListFragment extends Fragment implements MovieList.View {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+
         unbinder.unbind();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+
         // LeakCanary
         RefWatcher refWatcher = App.getRefWatcher(getActivity());
         refWatcher.watch(this);
