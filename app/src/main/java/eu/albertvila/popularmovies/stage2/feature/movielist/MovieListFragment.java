@@ -36,7 +36,7 @@ import timber.log.Timber;
 /**
  * Created by Albert Vila Calvo on 19/1/16.
  */
-public class MovieListFragment extends Fragment implements MovieList.View {
+public class MovieListFragment extends Fragment implements MovieList.View, MoviesAdapter.Listener {
 
     @Inject MovieList.Presenter presenter;
 
@@ -65,12 +65,19 @@ public class MovieListFragment extends Fragment implements MovieList.View {
 
         setHasOptionsMenu(true);
 
-        adapter = new MoviesAdapter(movies);
+        adapter = new MoviesAdapter(this, movies);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new AutofitGridLayoutManager(getActivity(), R.dimen.movie_grid_min_column_width));
         recyclerView.setAdapter(adapter);
 
         return v;
+    }
+
+    // MoviesAdapter.Listener
+
+    @Override
+    public void onMovieClick(Movie movie) {
+        
     }
 
     // MovieList.View

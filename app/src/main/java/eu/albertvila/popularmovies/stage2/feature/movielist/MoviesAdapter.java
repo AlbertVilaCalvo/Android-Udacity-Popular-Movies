@@ -21,9 +21,16 @@ import eu.albertvila.popularmovies.stage2.data.model.Movie;
  * Created by Albert Vila Calvo on 19/1/16.
  */
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder> {
+
+    public interface Listener {
+        void onMovieClick(Movie movie);
+    }
+
+    private Listener listener;
     private List<Movie> movies;
 
-    public MoviesAdapter(@NonNull List<Movie> movies) {
+    public MoviesAdapter(@NonNull Listener listener, @NonNull List<Movie> movies) {
+        this.listener = listener;
         this.movies = movies;
     }
 
@@ -43,7 +50,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
         holder.bind(movies.get(position));
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private Movie movie;
 
         @BindView(R.id.grid_item_image) ImageView imageView;
@@ -52,12 +59,18 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            itemView.setOnClickListener(this);
         }
 
         public void bind(Movie movie) {
             this.movie = movie;
             textView.setText(movie.originalTitle());
             Glide.with(imageView.getContext()).load(movie.posterUrl()).crossFade().into(imageView);
+        }
+
+        @Override
+        public void onClick(View view) {
+            listener.onMovieClick(movie);
         }
     }
 
