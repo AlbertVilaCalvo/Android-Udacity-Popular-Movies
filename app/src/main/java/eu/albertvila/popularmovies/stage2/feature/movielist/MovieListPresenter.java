@@ -70,7 +70,7 @@ public class MovieListPresenter implements MovieList.Presenter {
     // https://caster.io/episodes/retrofit2-with-rxjava/
     // https://caster.io/courses/rxjava/
 
-    public void getMovies() {
+    private void getMovies() {
         unsubscribe();
 
         Observable<List<Movie>> observable = movieRepository.observeMovies();
@@ -104,7 +104,8 @@ public class MovieListPresenter implements MovieList.Presenter {
                         return sortedMovies;
                     }
                 })
-                // To debug
+                // To debug sorting
+                /*
                 .doOnNext(new Action1<List<Movie>>() {
                     @Override
                     public void call(List<Movie> movies) {
@@ -118,6 +119,7 @@ public class MovieListPresenter implements MovieList.Presenter {
                         }
                     }
                 })
+                */
                 .subscribe(new Subscriber<List<Movie>>() {
                     @Override
                     public void onCompleted() {
