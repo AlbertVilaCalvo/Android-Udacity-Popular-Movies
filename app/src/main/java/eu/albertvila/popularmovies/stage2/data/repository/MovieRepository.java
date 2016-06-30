@@ -16,4 +16,8 @@ public interface MovieRepository {
 
     Observable<List<Movie>> observeMovies();
 
+    void setSelectedMovie(Movie movie);
+
+    Observable<Movie> observeSelectedMovie();
+
 }

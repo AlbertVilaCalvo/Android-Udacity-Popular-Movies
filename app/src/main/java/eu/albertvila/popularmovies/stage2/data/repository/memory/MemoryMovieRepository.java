@@ -56,4 +56,14 @@ public class MemoryMovieRepository implements MovieRepository {
                 });
     }
 
+    @Override
+    public void setSelectedMovie(Movie movie) {
+        // TODO
+    }
+
+    @Override
+    public Observable<Movie> observeSelectedMovie() {
+        // TODO
+        return null;
+    }
 }

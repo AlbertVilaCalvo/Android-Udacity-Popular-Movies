@@ -75,6 +75,19 @@ public abstract class Movie {
         }
     };
 
+    public static Func1<SqlBrite.Query, Movie> QUERY_TO_ITEM_MAPPER = new Func1<SqlBrite.Query, Movie>() {
+        @Override
+        public Movie call(SqlBrite.Query query) {
+            Cursor cursor = query.run();
+            try {
+                cursor.moveToNext();
+                return createFromCursor(cursor);
+            } finally {
+                cursor.close();
+            }
+        }
+    };
+
     public static ContentValues buildContentValues(Movie movie) {
         return buildContentValues(movie.id(), movie.originalTitle(), movie.posterPath(), movie.popularity(), movie.rating());
     }

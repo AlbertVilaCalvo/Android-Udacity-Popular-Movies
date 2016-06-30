@@ -17,8 +17,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import rx.Observable;
+import rx.Subscriber;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action0;
+import rx.subjects.PublishSubject;
 import timber.log.Timber;
 
 /**
@@ -52,7 +55,6 @@ public class DbMovieRepository implements MovieRepository {
 
     @Override
     public Observable<List<Movie>> observeMovies() {
-        // TODO We are ignoring ShowMovieCriteria for now -> fix
         Observable<SqlBrite.Query> moviesQuery = db.createQuery(Movie.TABLE, "SELECT * FROM " + Movie.TABLE);
         return moviesQuery
                 .doOnSubscribe(new Action0() {
@@ -124,6 +126,52 @@ public class DbMovieRepository implements MovieRepository {
                 Timber.e(t, "fetchMovies() onFailure()");
             }
         });
+    }
+
+    private static final long NO_MOVIE_SELECTED_YET = -1; // selectedMovieId initial value
+    private long selectedMovieId = NO_MOVIE_SELECTED_YET;
+
+    private PublishSubject<Movie> moviePublishSubject = PublishSubject.create();
+    private Subscription selectedMovieSubscription;
+
+    @Override
+    public void setSelectedMovie(Movie movie) {
+        selectedMovieId = movie.id();
+
+        if (selectedMovieSubscription != null && !selectedMovieSubscription.isUnsubscribed()) {
+            selectedMovieSubscription.unsubscribe();
+            Timber.i("DbMovieRepository selectedMovieSubscription.unsubscribe()");
+        }
+
+        Observable<Movie> selectedMovieObservable = db
+                .createQuery(Movie.TABLE, "SELECT * FROM " + Movie.TABLE + " WHERE _id = ?", String.valueOf(selectedMovieId))
+                .map(Movie.QUERY_TO_ITEM_MAPPER)
+                .observeOn(AndroidSchedulers.mainThread());
+
+        selectedMovieSubscription = selectedMovieObservable.subscribe(new Subscriber<Movie>() {
+            @Override
+            public void onCompleted() {
+                Timber.i("DbMovieRepository setSelectedMovie() onCompleted()");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Timber.e(e, "DbMovieRepository setSelectedMovie() onError()");
+            }
+
+            @Override
+            public void onNext(Movie movie) {
+                Timber.i("DbMovieRepository setSelectedMovie() onNext() - movie: %s", movie.toString());
+                moviePublishSubject.onNext(movie);
+            }
+        });
+    }
+
+    @Override
+    public Observable<Movie> observeSelectedMovie() {
+//        Observable<SqlBrite.Query> selectedMovieQuery = db.createQuery(Movie.TABLE, "SELECT * FROM " + Movie.TABLE + " WHERE _id = " + selectedMovieId);
+//        return selectedMovieQuery.map(Movie.QUERY_TO_ITEM_MAPPER);
+        return moviePublishSubject;
     }
 
 }
