@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
 import eu.albertvila.popularmovies.stage2.R;
+import eu.albertvila.popularmovies.stage2.feature.moviedetail.MovieDetailFragment;
 import eu.albertvila.popularmovies.stage2.feature.movielist.MovieListFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -34,6 +35,16 @@ public class MainActivity extends AppCompatActivity {
                     // FragmentManager's list
                     .add(R.id.fragment_container, fragment)
                     .commit();
+        }
+
+        // Tablet / master-detail
+        if (findViewById(R.id.detail_fragment_container) != null) {
+            Fragment detailFragment = fm.findFragmentById(R.id.detail_fragment_container);
+            if (detailFragment == null) {
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.detail_fragment_container, new MovieDetailFragment())
+                        .commit();
+            }
         }
     }
 
