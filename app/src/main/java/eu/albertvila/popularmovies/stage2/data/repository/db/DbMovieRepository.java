@@ -21,7 +21,7 @@ import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action0;
-import rx.subjects.PublishSubject;
+import rx.subjects.BehaviorSubject;
 import timber.log.Timber;
 
 /**
@@ -131,7 +131,8 @@ public class DbMovieRepository implements MovieRepository {
     private static final long NO_MOVIE_SELECTED_YET = -1; // selectedMovieId initial value
     private long selectedMovieId = NO_MOVIE_SELECTED_YET;
 
-    private PublishSubject<Movie> moviePublishSubject = PublishSubject.create();
+    // A BehaviourSubject emits the most recently emitted Movie when an observer subscribes to it
+    private BehaviorSubject<Movie> movieSubject = BehaviorSubject.create();
     private Subscription selectedMovieSubscription;
 
     @Override
@@ -162,7 +163,7 @@ public class DbMovieRepository implements MovieRepository {
             @Override
             public void onNext(Movie movie) {
                 Timber.i("DbMovieRepository setSelectedMovie() onNext() - movie: %s", movie.toString());
-                moviePublishSubject.onNext(movie);
+                movieSubject.onNext(movie);
             }
         });
     }
@@ -171,7 +172,7 @@ public class DbMovieRepository implements MovieRepository {
     public Observable<Movie> observeSelectedMovie() {
 //        Observable<SqlBrite.Query> selectedMovieQuery = db.createQuery(Movie.TABLE, "SELECT * FROM " + Movie.TABLE + " WHERE _id = " + selectedMovieId);
 //        return selectedMovieQuery.map(Movie.QUERY_TO_ITEM_MAPPER);
-        return moviePublishSubject;
+        return movieSubject;
     }
 
 }
