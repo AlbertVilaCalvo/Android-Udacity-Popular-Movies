@@ -18,6 +18,7 @@ import butterknife.Unbinder;
 import eu.albertvila.popularmovies.stage2.R;
 import eu.albertvila.popularmovies.stage2.data.model.Movie;
 import eu.albertvila.popularmovies.stage2.misc.App;
+import timber.log.Timber;
 
 /**
  * Created by Albert Vila Calvo on 25/6/16.
@@ -31,6 +32,12 @@ public class MovieDetailFragment extends Fragment implements MovieDetail.View {
     @BindView(R.id.movie_detail_date) TextView date;
     @BindView(R.id.movie_detail_rating) TextView rating;
     @BindView(R.id.movie_detail_plot) TextView plot;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Timber.i("New MovieDetailFragment created");
+    }
 
     @Nullable
     @Override
@@ -48,6 +55,7 @@ public class MovieDetailFragment extends Fragment implements MovieDetail.View {
 
     @Override
     public void showMovie(Movie movie) {
+        Timber.d("MovieDetailFragment showMovie() %s", movie);
 //        date.setText(movie.);
         rating.setText(String.valueOf(movie.rating()));
 //        plot.setText(movie.);
