@@ -65,12 +65,7 @@ public abstract class Movie {
             try {
                 List<Movie> movies = new ArrayList<Movie>(cursor.getCount());
                 while (cursor.moveToNext()) {
-                    long id = cursor.getLong(cursor.getColumnIndexOrThrow(Movie.ID));
-                    String title = cursor.getString(cursor.getColumnIndexOrThrow(Movie.ORIGINAL_TITLE));
-                    String posterPath = cursor.getString(cursor.getColumnIndexOrThrow(Movie.POSTER_PATH));
-                    float popularity = cursor.getFloat(cursor.getColumnIndexOrThrow(Movie.POPULARITY));
-                    float rating = cursor.getFloat(cursor.getColumnIndexOrThrow(Movie.RATING));
-                    Movie movie = new AutoValue_Movie(id, title, posterPath, popularity, rating);
+                    Movie movie = createFromCursor(cursor);
                     movies.add(movie);
                 }
                 return movies;
@@ -92,6 +87,15 @@ public abstract class Movie {
         contentValues.put(POPULARITY, popularity);
         contentValues.put(RATING, rating);
         return contentValues;
+    }
+
+    public static Movie createFromCursor(Cursor cursor) {
+        long id = cursor.getLong(cursor.getColumnIndexOrThrow(Movie.ID));
+        String title = cursor.getString(cursor.getColumnIndexOrThrow(Movie.ORIGINAL_TITLE));
+        String posterPath = cursor.getString(cursor.getColumnIndexOrThrow(Movie.POSTER_PATH));
+        float popularity = cursor.getFloat(cursor.getColumnIndexOrThrow(Movie.POPULARITY));
+        float rating = cursor.getFloat(cursor.getColumnIndexOrThrow(Movie.RATING));
+        return new AutoValue_Movie(id, title, posterPath, popularity, rating);
     }
 
 }
