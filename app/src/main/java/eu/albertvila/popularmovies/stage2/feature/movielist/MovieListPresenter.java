@@ -60,6 +60,12 @@ public class MovieListPresenter implements MovieList.Presenter {
         }
     }
 
+    @Override
+    public void movieSelected(Movie movie) {
+        Timber.i("Selected movie: %s", movie.toString());
+        movieRepository.setSelectedMovie(movie);
+    }
+
     // TODO watch this videos
     // https://caster.io/episodes/retrofit2-with-rxjava/
     // https://caster.io/courses/rxjava/

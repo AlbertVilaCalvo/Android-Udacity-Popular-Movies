@@ -21,6 +21,7 @@ public interface MovieList {
         void stop();
         void newShowMovieCriteriaSelected(ShowMovieCriteria newCriteria);
         void menuItemShowMovieCriteriaClick();
+        void movieSelected(Movie movie);
     }
 
 }

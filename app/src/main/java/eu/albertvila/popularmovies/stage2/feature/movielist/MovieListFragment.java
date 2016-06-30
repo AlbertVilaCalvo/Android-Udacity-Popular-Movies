@@ -77,7 +77,7 @@ public class MovieListFragment extends Fragment implements MovieList.View, Movie
 
     @Override
     public void onMovieClick(Movie movie) {
-        
+        presenter.movieSelected(movie);
     }
 
     // MovieList.View
