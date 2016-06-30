@@ -54,7 +54,7 @@ public class AppModule {
     }
 
     // The default (initial) ShowMovieCriteria value used when the app starts
-    @Provides
+    @Provides @Singleton
     public ShowMovieCriteria provideDefaultShowMovieCriteria() {
         return ShowMovieCriteria.MOST_POPULAR;
     }
