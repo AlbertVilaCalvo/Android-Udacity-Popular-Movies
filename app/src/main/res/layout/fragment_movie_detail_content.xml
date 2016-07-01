@@ -25,15 +25,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
         >
 
         <TextView
             android:id="@+id/movie_detail_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="2011-11-23"
+            tools:text="1998-11-23"
             android:textColor="@color/white"
             android:textSize="16sp"
             android:padding="16dp"
@@ -51,11 +49,11 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/movie_detail_plot"
+        android:id="@+id/movie_detail_overview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        tools:text="Movie Plot"
+        tools:text="'The Dude' Lebowski, mistaken for a millionaire Lebowski, seeks restitution for his ruined rug and enlists his bowling buddies to help get it."
         android:textColor="@color/white"
         android:textSize="14sp"
         />

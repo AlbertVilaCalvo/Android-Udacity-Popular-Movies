@@ -37,7 +37,7 @@ public class MovieDetailFragment extends Fragment implements MovieDetail.View {
     @BindView(R.id.movie_detail_title) TextView title;
     @BindView(R.id.movie_detail_date) TextView date;
     @BindView(R.id.movie_detail_rating) TextView rating;
-    @BindView(R.id.movie_detail_plot) TextView plot;
+    @BindView(R.id.movie_detail_overview) TextView overview;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -75,8 +75,8 @@ public class MovieDetailFragment extends Fragment implements MovieDetail.View {
 
         title.setText(movie.originalTitle());
         date.setText(movie.releaseDate());
-        rating.setText(String.valueOf(movie.rating()));
-//        plot.setText(movie.);
+        rating.setText(movie.rating() + "/10");
+        overview.setText(movie.overview());
     }
 
     // Lifecycle
