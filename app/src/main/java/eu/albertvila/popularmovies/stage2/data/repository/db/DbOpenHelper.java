@@ -40,7 +40,7 @@ public class DbOpenHelper extends SQLiteOpenHelper {
         // TODO add index?
 
         // Uncomment to add some test items
-        // ContentValues contentValues = Movie.buildContentValues(22, "The title", "/nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg");
+        // ContentValues contentValues = Movie.buildContentValuesWithoutFavorite(22, "The title", "/nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg");
         // db.insert(Movie.TABLE, null, contentValues);
     }
 

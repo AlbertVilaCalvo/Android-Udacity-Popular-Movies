@@ -102,11 +102,11 @@ public abstract class Movie {
         }
     };
 
-    public static ContentValues buildContentValues(Movie movie) {
-        return buildContentValues(movie.id(), movie.originalTitle(), movie.overview(), movie.releaseDate(), movie.posterPath(), movie.popularity(), movie.rating());
+    public static ContentValues buildContentValuesWithoutFavorite(Movie movie) {
+        return buildContentValuesWithoutFavorite(movie.id(), movie.originalTitle(), movie.overview(), movie.releaseDate(), movie.posterPath(), movie.popularity(), movie.rating());
     }
 
-    public static ContentValues buildContentValues(long id, String originalTitle, String overview, String releaseDate, String posterPath, float popularity, float rating) {
+    public static ContentValues buildContentValuesWithoutFavorite(long id, String originalTitle, String overview, String releaseDate, String posterPath, float popularity, float rating) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(ID, id);
         contentValues.put(ORIGINAL_TITLE, originalTitle);
@@ -115,6 +115,7 @@ public abstract class Movie {
         contentValues.put(POSTER_PATH, posterPath);
         contentValues.put(POPULARITY, popularity);
         contentValues.put(RATING, rating);
+        // Note that we don't put 'favorite'! We don't want to overwrite it's value when we update movies with new data from the server
         return contentValues;
     }
 

@@ -99,10 +99,21 @@ public class DbMovieRepository implements MovieRepository {
                 try {
                     int susccessInsertCount = 0;
                     for (Movie movie : movies) {
+                        ContentValues contentValues = Movie.buildContentValuesWithoutFavorite(movie);
+
                         // http://stackoverflow.com/questions/13311727/android-sqlite-insert-or-update
                         // https://developer.android.com/reference/android/database/sqlite/SQLiteDatabase.html#CONFLICT_REPLACE
-                        ContentValues contentValues = Movie.buildContentValues(movie);
-                        long id = db.insert(Movie.TABLE, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
+                        // If we do this:
+                        // long id = db.insert(Movie.TABLE, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
+                        // We replace the entire row if already exists and we loose the 'favorite' value! :(
+
+                        // http://stackoverflow.com/a/20568176/4034572
+                        // We insert and, if it fails (because the column already exists), then we update.
+                        // Note that we do NOT update 'favorite' in order to preserve it's value!
+                        long id = db.insert(Movie.TABLE, contentValues, SQLiteDatabase.CONFLICT_IGNORE);
+                        if (id == -1) {
+                            id = db.update(Movie.TABLE, contentValues, Movie.ID  + " = ?", String.valueOf(movie.id()));
+                        }
 
                         if (id == -1) {
                             Timber.e("fetchMovies() insert() error on Movie with id %d", movie.id());
