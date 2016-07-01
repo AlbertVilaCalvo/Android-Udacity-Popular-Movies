@@ -139,23 +139,20 @@ public class DbMovieRepository implements MovieRepository {
         });
     }
 
-    private Movie selectedMovie;
-
-    // A BehaviourSubject emits the most recently emitted Movie when an observer subscribes to it
+    // A BehaviourSubject emits the most recently emitted Movie when an observer subscribes to it.
+    // We can retrieve the current selected movie with movieSubject.getValue()
     private BehaviorSubject<Movie> movieSubject = BehaviorSubject.create();
     private Subscription selectedMovieSubscription;
 
     @Override
     public void setSelectedMovie(Movie movie) {
-        selectedMovie = movie;
-
         if (selectedMovieSubscription != null && !selectedMovieSubscription.isUnsubscribed()) {
             selectedMovieSubscription.unsubscribe();
             Timber.i("DbMovieRepository selectedMovieSubscription.unsubscribe()");
         }
 
         Observable<Movie> selectedMovieObservable = db
-                .createQuery(Movie.TABLE, "SELECT * FROM " + Movie.TABLE + " WHERE " + Movie.ID  + " = ?", String.valueOf(selectedMovie.id()))
+                .createQuery(Movie.TABLE, "SELECT * FROM " + Movie.TABLE + " WHERE " + Movie.ID  + " = ?", String.valueOf(movie.id()))
                 .map(Movie.QUERY_TO_ITEM_MAPPER)
                 .observeOn(AndroidSchedulers.mainThread());
 
@@ -180,20 +177,20 @@ public class DbMovieRepository implements MovieRepository {
 
     @Override
     public Observable<Movie> observeSelectedMovie() {
-//        Observable<SqlBrite.Query> selectedMovieQuery = db.createQuery(Movie.TABLE, "SELECT * FROM " + Movie.TABLE + " WHERE _id = " + selectedMovieId);
-//        return selectedMovieQuery.map(Movie.QUERY_TO_ITEM_MAPPER);
         return movieSubject;
     }
 
     @Override
     public void favoriteButtonClick() {
+        // Get current selected movie from subject
+        Movie selectedMovie = movieSubject.getValue();
         // Toggle favorite
         int newFavoriteValue = selectedMovie.isFavorite() ? 0 : 1;
-        Timber.i("Update movie '%s' - set favorite to %d", selectedMovie.originalTitle(), newFavoriteValue);
-        // Update
+        // Update DB
         ContentValues contentValues = new ContentValues();
         contentValues.put(Movie.FAVORITE, newFavoriteValue);
         db.update(Movie.TABLE, contentValues, Movie.ID  + " = ?", String.valueOf(selectedMovie.id()));
+        Timber.i("Update movie '%s' - set favorite to %d", selectedMovie.originalTitle(), newFavoriteValue);
     }
 
 }
