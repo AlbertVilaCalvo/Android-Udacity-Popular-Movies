@@ -5,11 +5,12 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import eu.albertvila.popularmovies.stage2.R;
+import eu.albertvila.popularmovies.stage2.feature.FragmentListener;
 
 /**
  * Created by Albert Vila Calvo on 25/6/16.
  */
-public class MovieDetailActivity extends AppCompatActivity {
+public class MovieDetailActivity extends AppCompatActivity implements FragmentListener {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -23,4 +24,10 @@ public class MovieDetailActivity extends AppCompatActivity {
                     .commit();
         }
     }
+
+    @Override
+    public boolean isMasterDetail() {
+        return false;
+    }
+
 }

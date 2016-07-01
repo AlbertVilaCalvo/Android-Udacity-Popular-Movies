@@ -9,7 +9,7 @@ import eu.albertvila.popularmovies.stage2.R;
 import eu.albertvila.popularmovies.stage2.feature.moviedetail.MovieDetailFragment;
 import eu.albertvila.popularmovies.stage2.feature.movielist.MovieListFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements FragmentListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Tablet / master-detail
-        if (findViewById(R.id.detail_fragment_container) != null) {
+        if (isMasterDetail()) {
             Fragment detailFragment = fm.findFragmentById(R.id.detail_fragment_container);
             if (detailFragment == null) {
                 getSupportFragmentManager().beginTransaction()
@@ -46,6 +46,11 @@ public class MainActivity extends AppCompatActivity {
                         .commit();
             }
         }
+    }
+
+    @Override
+    public boolean isMasterDetail() {
+        return findViewById(R.id.detail_fragment_container) != null;
     }
 
     /*
