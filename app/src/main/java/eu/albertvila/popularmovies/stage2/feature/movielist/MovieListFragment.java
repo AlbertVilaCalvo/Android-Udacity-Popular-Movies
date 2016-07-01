@@ -29,6 +29,8 @@ import butterknife.Unbinder;
 import eu.albertvila.popularmovies.stage2.R;
 import eu.albertvila.popularmovies.stage2.data.model.Movie;
 import eu.albertvila.popularmovies.stage2.data.repository.ShowMovieCriteria;
+import eu.albertvila.popularmovies.stage2.feature.FragmentListener;
+import eu.albertvila.popularmovies.stage2.feature.moviedetail.MovieDetailActivity;
 import eu.albertvila.popularmovies.stage2.misc.App;
 import eu.albertvila.popularmovies.stage2.misc.recyclerview.AutofitGridLayoutManager;
 import timber.log.Timber;
@@ -78,6 +80,14 @@ public class MovieListFragment extends Fragment implements MovieList.View, Movie
     @Override
     public void onMovieClick(Movie movie) {
         presenter.movieSelected(movie);
+
+        // Open MovieDetailActivity if master/detail
+        // TODO this should be done in the presenter
+        FragmentListener listener = (FragmentListener) getActivity();
+        if (!listener.isMasterDetail()) {
+            Intent i = new Intent(getActivity(), MovieDetailActivity.class);
+            startActivity(i);
+        }
     }
 
     // MovieList.View
