@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
@@ -53,8 +52,8 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private Movie movie;
 
-        @BindView(R.id.grid_item_image) ImageView imageView;
-        @BindView(R.id.grid_item_title) TextView textView;
+        @BindView(R.id.grid_item_image) ImageView image;
+        @BindView(R.id.grid_item_favorite) ImageView favoriteIcon;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -64,8 +63,13 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
 
         public void bind(Movie movie) {
             this.movie = movie;
-            textView.setText(movie.originalTitle());
-            Glide.with(imageView.getContext()).load(movie.posterUrl()).crossFade().into(imageView);
+            if (movie.isFavorite()) {
+                favoriteIcon.setImageResource(R.drawable.ic_star_yellow_24dp);
+                favoriteIcon.setVisibility(View.VISIBLE);
+            } else {
+                favoriteIcon.setVisibility(View.INVISIBLE);
+            }
+            Glide.with(image.getContext()).load(movie.posterUrl()).crossFade().into(image);
         }
 
         @Override
