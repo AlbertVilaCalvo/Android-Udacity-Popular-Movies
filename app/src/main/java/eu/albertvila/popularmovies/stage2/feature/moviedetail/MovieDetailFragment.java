@@ -32,6 +32,8 @@ public class MovieDetailFragment extends Fragment implements MovieDetail.View {
 
     private Unbinder unbinder;
 
+    @BindView(R.id.toolbar) Toolbar toolbar;
+
     @BindView(R.id.movie_detail_date) TextView date;
     @BindView(R.id.movie_detail_rating) TextView rating;
     @BindView(R.id.movie_detail_plot) TextView plot;
@@ -51,23 +53,17 @@ public class MovieDetailFragment extends Fragment implements MovieDetail.View {
 
         App.getComponent(getActivity()).inject(this);
 
-        return v;
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
         // Show back arrow <- if not master detail
         FragmentListener listener = (FragmentListener) getActivity();
         if (!listener.isMasterDetail()) {
-            Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
             AppCompatActivity activity = (AppCompatActivity) getActivity();
             activity.setSupportActionBar(toolbar);
             if (activity.getSupportActionBar() != null) {
                 activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             }
         }
+
+        return v;
     }
 
     // MovieDetail.View
