@@ -34,6 +34,7 @@ public class MovieDetailFragment extends Fragment implements MovieDetail.View {
 
     @BindView(R.id.toolbar) Toolbar toolbar;
 
+    @BindView(R.id.movie_detail_title) TextView title;
     @BindView(R.id.movie_detail_date) TextView date;
     @BindView(R.id.movie_detail_rating) TextView rating;
     @BindView(R.id.movie_detail_plot) TextView plot;
@@ -71,6 +72,8 @@ public class MovieDetailFragment extends Fragment implements MovieDetail.View {
     @Override
     public void showMovie(Movie movie) {
         Timber.d("MovieDetailFragment showMovie() %s", movie);
+
+        title.setText(movie.originalTitle());
 //        date.setText(movie.);
         rating.setText(String.valueOf(movie.rating()));
 //        plot.setText(movie.);
