@@ -3,6 +3,8 @@ package eu.albertvila.popularmovies.stage2.feature.moviedetail;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +19,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import eu.albertvila.popularmovies.stage2.R;
 import eu.albertvila.popularmovies.stage2.data.model.Movie;
+import eu.albertvila.popularmovies.stage2.feature.FragmentListener;
 import eu.albertvila.popularmovies.stage2.misc.App;
 import timber.log.Timber;
 
@@ -49,6 +52,22 @@ public class MovieDetailFragment extends Fragment implements MovieDetail.View {
         App.getComponent(getActivity()).inject(this);
 
         return v;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        // Show back arrow <- if not master detail
+        FragmentListener listener = (FragmentListener) getActivity();
+        if (!listener.isMasterDetail()) {
+            Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+            AppCompatActivity activity = (AppCompatActivity) getActivity();
+            activity.setSupportActionBar(toolbar);
+            if (activity.getSupportActionBar() != null) {
+                activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            }
+        }
     }
 
     // MovieDetail.View
