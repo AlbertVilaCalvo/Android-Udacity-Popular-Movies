@@ -128,8 +128,7 @@ public class DbMovieRepository implements MovieRepository {
         });
     }
 
-    private static final long NO_MOVIE_SELECTED_YET = -1; // selectedMovieId initial value
-    private long selectedMovieId = NO_MOVIE_SELECTED_YET;
+    private Movie selectedMovie;
 
     // A BehaviourSubject emits the most recently emitted Movie when an observer subscribes to it
     private BehaviorSubject<Movie> movieSubject = BehaviorSubject.create();
@@ -137,7 +136,7 @@ public class DbMovieRepository implements MovieRepository {
 
     @Override
     public void setSelectedMovie(Movie movie) {
-        selectedMovieId = movie.id();
+        selectedMovie = movie;
 
         if (selectedMovieSubscription != null && !selectedMovieSubscription.isUnsubscribed()) {
             selectedMovieSubscription.unsubscribe();
@@ -145,7 +144,7 @@ public class DbMovieRepository implements MovieRepository {
         }
 
         Observable<Movie> selectedMovieObservable = db
-                .createQuery(Movie.TABLE, "SELECT * FROM " + Movie.TABLE + " WHERE _id = ?", String.valueOf(selectedMovieId))
+                .createQuery(Movie.TABLE, "SELECT * FROM " + Movie.TABLE + " WHERE " + Movie.ID  + " = ?", String.valueOf(selectedMovie.id()))
                 .map(Movie.QUERY_TO_ITEM_MAPPER)
                 .observeOn(AndroidSchedulers.mainThread());
 
