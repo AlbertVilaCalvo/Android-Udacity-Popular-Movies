@@ -66,4 +66,9 @@ public class MemoryMovieRepository implements MovieRepository {
         // TODO
         return null;
     }
+
+    @Override
+    public void favoriteButtonClick() {
+        // TODO
+    }
 }

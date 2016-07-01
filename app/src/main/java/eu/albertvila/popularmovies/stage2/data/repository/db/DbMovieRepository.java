@@ -185,4 +185,15 @@ public class DbMovieRepository implements MovieRepository {
         return movieSubject;
     }
 
+    @Override
+    public void favoriteButtonClick() {
+        // Toggle favorite
+        int newFavoriteValue = selectedMovie.isFavorite() ? 0 : 1;
+        Timber.i("Update movie '%s' - set favorite to %d", selectedMovie.originalTitle(), newFavoriteValue);
+        // Update
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(Movie.FAVORITE, newFavoriteValue);
+        db.update(Movie.TABLE, contentValues, Movie.ID  + " = ?", String.valueOf(selectedMovie.id()));
+    }
+
 }

@@ -36,7 +36,7 @@ public class MovieDetailPresenter implements MovieDetail.Presenter {
 
     @Override
     public void favoriteButtonClick() {
-
+        movieRepository.favoriteButtonClick();
     }
 
     private void getMovie() {

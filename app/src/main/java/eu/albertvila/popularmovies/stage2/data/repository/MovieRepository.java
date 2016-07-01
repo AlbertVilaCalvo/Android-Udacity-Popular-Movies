@@ -20,4 +20,6 @@ public interface MovieRepository {
 
     Observable<Movie> observeSelectedMovie();
 
+    void favoriteButtonClick();
+
 }
