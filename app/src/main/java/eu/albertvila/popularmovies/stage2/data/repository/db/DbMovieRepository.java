@@ -143,6 +143,21 @@ public class DbMovieRepository implements MovieRepository {
     // We can retrieve the current selected movie with movieSubject.getValue()
     private BehaviorSubject<Movie> movieSubject = BehaviorSubject.create();
     private Subscription selectedMovieSubscription;
+    private Subscriber<Movie> selectedMovieSubscriber = new Subscriber<Movie>() {
+        @Override
+        public void onCompleted() {
+            Timber.i("DbMovieRepository setSelectedMovie() onCompleted()");
+        }
+        @Override
+        public void onError(Throwable e) {
+            Timber.e(e, "DbMovieRepository setSelectedMovie() onError()");
+        }
+        @Override
+        public void onNext(Movie movie) {
+            Timber.i("DbMovieRepository setSelectedMovie() onNext() - movie: %s", movie.toString());
+            movieSubject.onNext(movie);
+        }
+    };
 
     @Override
     public void setSelectedMovie(Movie movie) {
@@ -156,23 +171,7 @@ public class DbMovieRepository implements MovieRepository {
                 .map(Movie.QUERY_TO_ITEM_MAPPER)
                 .observeOn(AndroidSchedulers.mainThread());
 
-        selectedMovieSubscription = selectedMovieObservable.subscribe(new Subscriber<Movie>() {
-            @Override
-            public void onCompleted() {
-                Timber.i("DbMovieRepository setSelectedMovie() onCompleted()");
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                Timber.e(e, "DbMovieRepository setSelectedMovie() onError()");
-            }
-
-            @Override
-            public void onNext(Movie movie) {
-                Timber.i("DbMovieRepository setSelectedMovie() onNext() - movie: %s", movie.toString());
-                movieSubject.onNext(movie);
-            }
-        });
+        selectedMovieSubscription = selectedMovieObservable.subscribe(selectedMovieSubscriber);
     }
 
     @Override
