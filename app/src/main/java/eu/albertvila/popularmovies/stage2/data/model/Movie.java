@@ -33,6 +33,7 @@ public abstract class Movie {
     public static final String POSTER_PATH = "poster_path";
     public static final String POPULARITY = "popularity";
     public static final String RATING = "rating";
+    public static final String FAVORITE = "favorite";
 
     public abstract long id();
 
@@ -57,6 +58,12 @@ public abstract class Movie {
 
     @SerializedName("vote_average")
     public abstract float rating();
+
+    abstract int favorite(); // should be a boolean but SQLite doesn't have this type
+
+    public boolean isFavorite() {
+        return favorite() > 0;
+    };
 
     // https://github.com/rharter/auto-value-gson
     // The public static method returning a TypeAdapter<Foo> is what
@@ -119,7 +126,8 @@ public abstract class Movie {
         String posterPath = cursor.getString(cursor.getColumnIndexOrThrow(Movie.POSTER_PATH));
         float popularity = cursor.getFloat(cursor.getColumnIndexOrThrow(Movie.POPULARITY));
         float rating = cursor.getFloat(cursor.getColumnIndexOrThrow(Movie.RATING));
-        return new AutoValue_Movie(id, title, overview, releaseDate, posterPath, popularity, rating);
+        int favorite = cursor.getInt(cursor.getColumnIndexOrThrow(Movie.FAVORITE));
+        return new AutoValue_Movie(id, title, overview, releaseDate, posterPath, popularity, rating, favorite);
     }
 
 }

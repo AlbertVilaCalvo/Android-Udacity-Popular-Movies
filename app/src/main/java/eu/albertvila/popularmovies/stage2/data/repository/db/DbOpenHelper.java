@@ -23,7 +23,8 @@ public class DbOpenHelper extends SQLiteOpenHelper {
             + Movie.RELEASE_DATE + " TEXT NOT NULL,"
             + Movie.POSTER_PATH + " TEXT," // poster path can be null!
             + Movie.POPULARITY + " REAL NOT NULL,"
-            + Movie.RATING + " REAL NOT NULL"
+            + Movie.RATING + " REAL NOT NULL,"
+            + Movie.FAVORITE + " INTEGER NOT NULL DEFAULT 0" // boolean value
             + ")";
 
 //    private static final String CREATE_MOVIE_ID_INDEX =
