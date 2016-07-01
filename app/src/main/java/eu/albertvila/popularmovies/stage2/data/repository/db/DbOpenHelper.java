@@ -19,6 +19,7 @@ public class DbOpenHelper extends SQLiteOpenHelper {
             + "CREATE TABLE " +Movie.TABLE + "("
             + Movie.ID + " INTEGER NOT NULL PRIMARY KEY,"
             + Movie.ORIGINAL_TITLE + " TEXT NOT NULL,"
+            + Movie.RELEASE_DATE + " TEXT NOT NULL,"
             + Movie.POSTER_PATH + " TEXT," // poster path can be null!
             + Movie.POPULARITY + " REAL NOT NULL,"
             + Movie.RATING + " REAL NOT NULL"

@@ -74,7 +74,7 @@ public class MovieDetailFragment extends Fragment implements MovieDetail.View {
         Timber.d("MovieDetailFragment showMovie() %s", movie);
 
         title.setText(movie.originalTitle());
-//        date.setText(movie.);
+        date.setText(movie.releaseDate());
         rating.setText(String.valueOf(movie.rating()));
 //        plot.setText(movie.);
     }

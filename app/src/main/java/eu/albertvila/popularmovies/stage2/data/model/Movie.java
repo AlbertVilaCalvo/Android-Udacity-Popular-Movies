@@ -28,6 +28,7 @@ public abstract class Movie {
     // http://stackoverflow.com/questions/4313987/do-i-have-to-use-id-as-a-sqlite-primary-key-and-does-it-have-to-be-an-int-an
     public static final String ID = "_id";
     public static final String ORIGINAL_TITLE = "original_title";
+    public static final String RELEASE_DATE = "release_date";
     public static final String POSTER_PATH = "poster_path";
     public static final String POPULARITY = "popularity";
     public static final String RATING = "rating";
@@ -36,6 +37,9 @@ public abstract class Movie {
 
     @SerializedName("original_title")
     public abstract String originalTitle();
+
+    @SerializedName("release_date")
+    public abstract String releaseDate();
 
     @Nullable
     @SerializedName("poster_path")
@@ -89,13 +93,14 @@ public abstract class Movie {
     };
 
     public static ContentValues buildContentValues(Movie movie) {
-        return buildContentValues(movie.id(), movie.originalTitle(), movie.posterPath(), movie.popularity(), movie.rating());
+        return buildContentValues(movie.id(), movie.originalTitle(), movie.releaseDate(), movie.posterPath(), movie.popularity(), movie.rating());
     }
 
-    public static ContentValues buildContentValues(long id, String originalTitle, String posterPath, float popularity, float rating) {
+    public static ContentValues buildContentValues(long id, String originalTitle, String releaseDate, String posterPath, float popularity, float rating) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(ID, id);
         contentValues.put(ORIGINAL_TITLE, originalTitle);
+        contentValues.put(RELEASE_DATE, releaseDate);
         contentValues.put(POSTER_PATH, posterPath);
         contentValues.put(POPULARITY, popularity);
         contentValues.put(RATING, rating);
@@ -105,10 +110,11 @@ public abstract class Movie {
     public static Movie createFromCursor(Cursor cursor) {
         long id = cursor.getLong(cursor.getColumnIndexOrThrow(Movie.ID));
         String title = cursor.getString(cursor.getColumnIndexOrThrow(Movie.ORIGINAL_TITLE));
+        String releaseDate = cursor.getString(cursor.getColumnIndexOrThrow(Movie.RELEASE_DATE));
         String posterPath = cursor.getString(cursor.getColumnIndexOrThrow(Movie.POSTER_PATH));
         float popularity = cursor.getFloat(cursor.getColumnIndexOrThrow(Movie.POPULARITY));
         float rating = cursor.getFloat(cursor.getColumnIndexOrThrow(Movie.RATING));
-        return new AutoValue_Movie(id, title, posterPath, popularity, rating);
+        return new AutoValue_Movie(id, title, releaseDate, posterPath, popularity, rating);
     }
 
 }
