@@ -2,6 +2,7 @@ package eu.albertvila.popularmovies.stage2.feature.moviedetail;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -16,6 +17,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 import eu.albertvila.popularmovies.stage2.R;
 import eu.albertvila.popularmovies.stage2.data.model.Movie;
@@ -33,6 +35,7 @@ public class MovieDetailFragment extends Fragment implements MovieDetail.View {
     private Unbinder unbinder;
 
     @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.fab) FloatingActionButton favoriteButton;
 
     @BindView(R.id.movie_detail_title) TextView title;
     @BindView(R.id.movie_detail_date) TextView date;
@@ -77,6 +80,18 @@ public class MovieDetailFragment extends Fragment implements MovieDetail.View {
         date.setText(movie.releaseDate());
         rating.setText(movie.rating() + "/10");
         overview.setText(movie.overview());
+
+        if (movie.isFavorite()) {
+            favoriteButton.setImageResource(R.drawable.ic_star_black_24dp);
+        } else {
+            favoriteButton.setImageResource(R.drawable.ic_star_border_black_24dp);
+        }
+        favoriteButton.setVisibility(View.VISIBLE);
+    }
+
+    @OnClick(R.id.fab)
+    public void favoriteButtonClick() {
+        presenter.favoriteButtonClick();
     }
 
     // Lifecycle
