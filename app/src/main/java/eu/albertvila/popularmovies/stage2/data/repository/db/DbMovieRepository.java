@@ -17,7 +17,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import rx.Observable;
-import rx.Subscriber;
+import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action0;
@@ -142,8 +142,13 @@ public class DbMovieRepository implements MovieRepository {
     // A BehaviourSubject emits the most recently emitted Movie when an observer subscribes to it.
     // We can retrieve the current selected movie with movieSubject.getValue()
     private BehaviorSubject<Movie> movieSubject = BehaviorSubject.create();
-    private Subscription selectedMovieSubscription;
-    private Subscriber<Movie> selectedMovieSubscriber = new Subscriber<Movie>() {
+
+    private Subscription selectedMovieSubscription; // to unsubscribe
+
+    // We can't use a Subscriber<Movie> because a Subscriber can't be reused once unsubscribed:
+    // http://stackoverflow.com/a/30222908/4034572
+    // http://stackoverflow.com/questions/27664221/what-is-the-difference-between-an-observer-and-a-subscriber
+    private Observer<Movie> selectedMovieObserver = new Observer<Movie>() {
         @Override
         public void onCompleted() {
             Timber.i("DbMovieRepository setSelectedMovie() onCompleted()");
@@ -171,7 +176,23 @@ public class DbMovieRepository implements MovieRepository {
                 .map(Movie.QUERY_TO_ITEM_MAPPER)
                 .observeOn(AndroidSchedulers.mainThread());
 
-        selectedMovieSubscription = selectedMovieObservable.subscribe(selectedMovieSubscriber);
+        selectedMovieSubscription = selectedMovieObservable.subscribe(selectedMovieObserver);
+
+//        selectedMovieSubscription = selectedMovieObservable.subscribe(new Subscriber<Movie>() {
+//            @Override
+//            public void onCompleted() {
+//                Timber.i("DbMovieRepository setSelectedMovie() onCompleted()");
+//            }
+//            @Override
+//            public void onError(Throwable e) {
+//                Timber.e(e, "DbMovieRepository setSelectedMovie() onError()");
+//            }
+//            @Override
+//            public void onNext(Movie movie) {
+//                Timber.i("DbMovieRepository setSelectedMovie() onNext() - movie: %s", movie.toString());
+//                movieSubject.onNext(movie);
+//            }
+//        });
     }
 
     @Override
