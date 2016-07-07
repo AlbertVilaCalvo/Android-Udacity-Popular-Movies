@@ -166,6 +166,11 @@ public class DbMovieRepository implements MovieRepository {
 
     @Override
     public void setSelectedMovie(Movie movie) {
+        // Check if it's the same as the current selected movie
+        if (movie.equals(movieSubject.getValue())) {
+            return;
+        }
+
         if (selectedMovieSubscription != null && !selectedMovieSubscription.isUnsubscribed()) {
             selectedMovieSubscription.unsubscribe();
             Timber.i("DbMovieRepository selectedMovieSubscription.unsubscribe()");
