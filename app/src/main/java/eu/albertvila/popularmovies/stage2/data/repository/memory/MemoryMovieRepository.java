@@ -47,13 +47,14 @@ public class MemoryMovieRepository implements MovieRepository {
 
         return observable
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
                 .map(new Func1<DiscoverMoviesResponse, List<Movie>>() {
                     @Override
                     public List<Movie> call(DiscoverMoviesResponse discoverMoviesResponse) {
+                        // Timber.i("observeMovies() map() thread: %s", Thread.currentThread().getName());
                         return discoverMoviesResponse.getMovies();
                     }
-                });
+                })
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     @Override

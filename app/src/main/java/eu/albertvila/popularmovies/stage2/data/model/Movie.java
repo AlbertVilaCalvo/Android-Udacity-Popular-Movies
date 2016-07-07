@@ -75,6 +75,7 @@ public abstract class Movie {
     public static Func1<SqlBrite.Query, List<Movie>> QUERY_TO_LIST_MAPPER = new Func1<SqlBrite.Query, List<Movie>>() {
         @Override
         public List<Movie> call(SqlBrite.Query query) {
+            // Timber.i("Movie QUERY_TO_LIST_MAPPER thread: %s", Thread.currentThread().getName());
             Cursor cursor = query.run();
             try {
                 List<Movie> movies = new ArrayList<Movie>(cursor.getCount());
