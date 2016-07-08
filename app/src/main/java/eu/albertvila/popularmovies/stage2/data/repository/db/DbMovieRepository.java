@@ -97,7 +97,7 @@ public class DbMovieRepository implements MovieRepository {
                 // We use transactions to prevent large changes to the data from spamming the subscriber
                 BriteDatabase.Transaction transaction = db.newTransaction();
                 try {
-                    int susccessInsertCount = 0;
+                    int successInsertCount = 0;
                     for (Movie movie : movies) {
                         ContentValues contentValues = Movie.buildContentValuesWithoutFavorite(movie);
 
@@ -118,14 +118,14 @@ public class DbMovieRepository implements MovieRepository {
                         if (id == -1) {
                             Timber.e("fetchMovies() insert() error on Movie with id %d", movie.id());
                         } else {
-                            susccessInsertCount++;
+                            successInsertCount++;
                         }
 
                         // WE could also use db.executeAndTrigger(); with a raw query to update or insert
                         // http://stackoverflow.com/questions/4205181/insert-into-a-mysql-table-or-update-if-exists
                         // http://stackoverflow.com/questions/418898/sqlite-upsert-not-insert-or-replace
                     }
-                    Timber.i("fetchMovies() insert() success/total %d/%d", susccessInsertCount, movies.size());
+                    Timber.i("fetchMovies() insert() success/total %d/%d", successInsertCount, movies.size());
                     transaction.markSuccessful();
                 } finally {
                     transaction.end();
