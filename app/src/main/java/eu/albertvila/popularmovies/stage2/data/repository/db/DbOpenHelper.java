@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import eu.albertvila.popularmovies.stage2.data.model.Movie;
+import eu.albertvila.popularmovies.stage2.data.model.Video;
 
 /**
  * Created by Albert Vila Calvo on 12/6/16.
@@ -38,6 +39,8 @@ public class DbOpenHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_MOVIE_TABLE);
         // TODO add index?
+
+        db.execSQL(Video.CREATE_TABLE);
 
         // Uncomment to add some test items
         // ContentValues contentValues = Movie.buildContentValuesWithoutFavorite(22, "The title", "/nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg");
