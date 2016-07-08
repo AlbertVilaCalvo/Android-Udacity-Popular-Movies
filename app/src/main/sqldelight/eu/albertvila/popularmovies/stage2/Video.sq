@@ -1,0 +1,13 @@
+
+
+CREATE TABLE video (
+  id TEXT NOT NULL PRIMARY KEY,
+  movie_id INTEGER NOT NULL,
+  name TEXT NOT NULL,
+  key TEXT NOT NULL
+);
+
+for_movie:
+SELECT *
+FROM video
+WHERE movie_id = ?;
