@@ -3,6 +3,8 @@ apply plugin: 'com.android.application'
 // Required by ButterKnife and Dagger annotation processor compiler
 apply plugin: 'com.neenbedankt.android-apt'
 
+apply plugin: 'com.squareup.sqldelight'
+
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.3"
