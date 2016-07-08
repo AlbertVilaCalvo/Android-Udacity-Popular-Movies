@@ -26,4 +26,24 @@ public interface MovieDbService {
     @GET("discover/movie")
     Observable<DiscoverMoviesResponse> discoverMoviesRx(@Query("api_key") String key, @Query("sort_by") String sort);
 
+    // http://docs.themoviedb.apiary.io/#reference/movies/movieidvideos/get?console=1
+    // Response example:
+    // {"id":368596,
+    // "results":[
+    //      {"id":"570d876f92514124ef00028c",
+    //      "iso_639_1":"en",
+    //      "iso_3166_1":"US",
+    //      "key":"FDz4WFjJ1zA",
+    //      "name":"Video 1",
+    //      "site":"YouTube",
+    //      "size":1080,
+    //      "type":"Video"}
+    // ]}
+
+    @GET("movie/{id}/videos")
+    Call<VideosResponse> getVideosForMovie(@Path("id") long movieId, @Query("api_key") String key);
+
+    @GET("movie/{id}/videos")
+    Observable<VideosResponse> getVideosForMovieRx(@Path("id") long movieId, @Query("api_key") String key);
+
 }
