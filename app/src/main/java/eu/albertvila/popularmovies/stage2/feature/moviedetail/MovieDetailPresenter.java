@@ -6,6 +6,7 @@ import eu.albertvila.popularmovies.stage2.data.repository.MovieRepository;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
+import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
 /**
@@ -15,11 +16,12 @@ public class MovieDetailPresenter implements MovieDetail.Presenter {
 
     private MovieRepository movieRepository;
     private MovieDetail.View view;
-    private Subscription subscription;
+    private CompositeSubscription subscriptions;
 
     public MovieDetailPresenter(MovieRepository movieRepository) {
         Timber.i("New MovieDetailPresenter created");
         this.movieRepository = movieRepository;
+        subscriptions = new CompositeSubscription();
     }
 
     @Override
@@ -31,7 +33,8 @@ public class MovieDetailPresenter implements MovieDetail.Presenter {
     @Override
     public void stop() {
         this.view = null;
-        unsubscribe();
+        Timber.i("MovieDetailPresenter subscriptions.clear()");
+        subscriptions.clear();
     }
 
     @Override
@@ -41,8 +44,7 @@ public class MovieDetailPresenter implements MovieDetail.Presenter {
 
     private void getMovie() {
         Observable<Movie> observable = movieRepository.observeSelectedMovie();
-
-        subscription = observable.subscribe(new Subscriber<Movie>() {
+        Subscription subscription = observable.subscribe(new Subscriber<Movie>() {
             @Override
             public void onCompleted() {
                 Timber.i("MovieDetailPresenter getMovie() onCompleted()");
@@ -61,13 +63,7 @@ public class MovieDetailPresenter implements MovieDetail.Presenter {
                 }
             }
         });
-    }
-
-    private void unsubscribe() {
-        if (subscription != null && !subscription.isUnsubscribed()) {
-            subscription.unsubscribe();
-            Timber.i("MovieDetailPresenter subscription.unsubscribe()");
-        }
+        subscriptions.add(subscription);
     }
 
 }
