@@ -27,7 +27,7 @@ public class MovieDetailPresenter implements MovieDetail.Presenter {
     @Override
     public void start(MovieDetail.View view) {
         this.view = view;
-        getMovie();
+        observeSelectedMovie();
     }
 
     @Override
@@ -42,22 +42,22 @@ public class MovieDetailPresenter implements MovieDetail.Presenter {
         movieRepository.favoriteButtonClick();
     }
 
-    private void getMovie() {
+    private void observeSelectedMovie() {
         Observable<Movie> observable = movieRepository.observeSelectedMovie();
         Subscription subscription = observable.subscribe(new Subscriber<Movie>() {
             @Override
             public void onCompleted() {
-                Timber.i("MovieDetailPresenter getMovie() onCompleted()");
+                Timber.i("MovieDetailPresenter observeSelectedMovie() onCompleted()");
             }
 
             @Override
             public void onError(Throwable e) {
-                Timber.e(e, "MovieDetailPresenter getMovie() onError()");
+                Timber.e(e, "MovieDetailPresenter observeSelectedMovie() onError()");
             }
 
             @Override
             public void onNext(Movie movie) {
-                Timber.i("MovieDetailPresenter getMovies() onNext() - movie: %s", movie.toString());
+                Timber.i("MovieDetailPresenter observeSelectedMovie() onNext() - movie: %s", movie.toString());
                 if (view != null) {
                     view.showMovie(movie);
                 }
