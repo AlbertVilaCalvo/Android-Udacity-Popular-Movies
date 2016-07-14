@@ -3,6 +3,7 @@ package eu.albertvila.popularmovies.stage2.data.repository;
 import java.util.List;
 
 import eu.albertvila.popularmovies.stage2.data.model.Movie;
+import eu.albertvila.popularmovies.stage2.data.model.Review;
 import eu.albertvila.popularmovies.stage2.data.model.Video;
 import rx.Observable;
 
@@ -24,5 +25,7 @@ public interface MovieRepository {
     void favoriteButtonClick();
 
     Observable<List<Video>> observeVideosForSelectedMovie();
+
+    Observable<List<Review>> observeReviewsForSelectedMovie();
 
 }

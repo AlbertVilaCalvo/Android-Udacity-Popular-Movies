@@ -12,8 +12,10 @@ import java.util.List;
 
 import eu.albertvila.popularmovies.stage2.data.api.DiscoverMoviesResponse;
 import eu.albertvila.popularmovies.stage2.data.api.MovieDbService;
+import eu.albertvila.popularmovies.stage2.data.api.ReviewsResponse;
 import eu.albertvila.popularmovies.stage2.data.api.VideosResponse;
 import eu.albertvila.popularmovies.stage2.data.model.Movie;
+import eu.albertvila.popularmovies.stage2.data.model.Review;
 import eu.albertvila.popularmovies.stage2.data.model.Video;
 import eu.albertvila.popularmovies.stage2.data.repository.MovieRepository;
 import eu.albertvila.popularmovies.stage2.data.repository.ShowMovieCriteria;
@@ -182,9 +184,12 @@ public class DbMovieRepository implements MovieRepository {
         }
 
         subscribeToSelectedMovie(movie.id());
+
         subscribeToVideosForSelectedMovie(movie.id());
+        subscribeToReviewsForSelectedMovie(movie.id());
 
         getVideosForMovie(movie.id());
+        getReviewsForMovie(movie.id());
     }
 
     private void subscribeToSelectedMovie(long movieId) {
@@ -335,6 +340,108 @@ public class DbMovieRepository implements MovieRepository {
     @Override
     public Observable<List<Video>> observeVideosForSelectedMovie() {
         return videosForSelectedMovieSubject;
+    }
+
+
+    // REVIEWS
+
+    private void getReviewsForMovie(long movieId) {
+        Observable<ReviewsResponse> observable = movieDbService.getReviewsForMovieRx(movieId, apiKey);
+        observable
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.computation())
+                .subscribe(new Subscriber<ReviewsResponse>() {
+                    @Override
+                    public void onCompleted() {
+                        Timber.i("getReviewsForMovie() onCompleted()");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Timber.e(e, "getReviewsForMovie() onError()");
+                    }
+
+                    @Override
+                    public void onNext(ReviewsResponse reviewsResponse) {
+                        // Timber.i("getReviewsForMovie() onNext() thread: %s", Thread.currentThread().getName());
+                        Timber.i("getReviewsForMovie() onNext() reviewsResponse %s", reviewsResponse);
+                        // Save to the DB
+                        BriteDatabase.Transaction transaction = db.newTransaction();
+                        try {
+                            int successInsertCount = 0;
+                            long movieId = reviewsResponse.id;
+                            for (Review review : reviewsResponse.results) {
+                                long id = db.insert(Review.TABLE_NAME,
+                                        Review.FACTORY.marshal()
+                                                .id(review.id())
+                                                .movie_id(movieId)
+                                                .author(review.author())
+                                                .content(review.content())
+                                                .url(review.url())
+                                                .asContentValues(),
+                                        SQLiteDatabase.CONFLICT_REPLACE);
+                                if (id != -1) successInsertCount++;
+                            }
+                            Timber.i("getReviewsForMovie() insert() success/total %d/%d", successInsertCount, reviewsResponse.results.size());
+                            transaction.markSuccessful();
+                        } finally {
+                            transaction.end();
+                        }
+                    }
+                });
+    }
+
+    private BehaviorSubject<List<Review>> reviewsForSelectedMovieSubject = BehaviorSubject.create();
+    private Subscription reviewsForSelectedMovieSubscription; // to unsubscribe
+    private Observer<List<Review>> reviewsForSelectedMovieObserver = new Observer<List<Review>>() {
+        @Override
+        public void onCompleted() {
+            Timber.i("DbMovieRepository reviewsForSelectedMovieObserver onCompleted()");
+        }
+        @Override
+        public void onError(Throwable e) {
+            Timber.e(e, "DbMovieRepository reviewsForSelectedMovieObserver onError()");
+        }
+        @Override
+        public void onNext(List<Review> reviews) {
+            Timber.i("DbMovieRepository reviewsForSelectedMovieObserver onNext() - movie: %s", reviews.toString());
+            reviewsForSelectedMovieSubject.onNext(reviews);
+        }
+    };
+
+    private void subscribeToReviewsForSelectedMovie(long movieId) {
+        if (reviewsForSelectedMovieSubscription != null && !reviewsForSelectedMovieSubscription.isUnsubscribed()) {
+            reviewsForSelectedMovieSubscription.unsubscribe();
+            Timber.i("DbMovieRepository reviewsForSelectedMovieSubscription.unsubscribe()");
+        }
+
+        Observable<List<Review>> reviewsForSelectedMovieObservable = db
+                .createQuery(Review.TABLE_NAME, Review.FOR_MOVIE, String.valueOf(movieId))
+                .map(new Func1<SqlBrite.Query, List<Review>>() {
+                    @Override
+                    public List<Review> call(SqlBrite.Query query) {
+                        Timber.i("subscribeToReviewsForSelectedMovie map thread: %s", Thread.currentThread().getName());
+                        Cursor cursor = query.run();
+                        try {
+                            List<Review> reviews = new ArrayList<>(cursor.getCount());
+                            while (cursor.moveToNext()) {
+                                Review review = Review.MAPPER.map(cursor);
+                                reviews.add(review);
+                            }
+                            return reviews;
+                        } finally {
+                            cursor.close();
+                        }
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread());
+
+        reviewsForSelectedMovieSubscription = reviewsForSelectedMovieObservable.subscribe(reviewsForSelectedMovieObserver);
+    }
+
+    @Override
+    public Observable<List<Review>> observeReviewsForSelectedMovie() {
+        return reviewsForSelectedMovieSubject;
     }
 
 }

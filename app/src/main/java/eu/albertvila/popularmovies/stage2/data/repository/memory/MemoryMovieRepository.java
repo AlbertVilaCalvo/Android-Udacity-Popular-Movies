@@ -5,6 +5,7 @@ import java.util.List;
 import eu.albertvila.popularmovies.stage2.data.api.DiscoverMoviesResponse;
 import eu.albertvila.popularmovies.stage2.data.api.MovieDbService;
 import eu.albertvila.popularmovies.stage2.data.model.Movie;
+import eu.albertvila.popularmovies.stage2.data.model.Review;
 import eu.albertvila.popularmovies.stage2.data.model.Video;
 import eu.albertvila.popularmovies.stage2.data.repository.MovieRepository;
 import eu.albertvila.popularmovies.stage2.data.repository.ShowMovieCriteria;
@@ -80,4 +81,9 @@ public class MemoryMovieRepository implements MovieRepository {
         return null;
     }
 
+    @Override
+    public Observable<List<Review>> observeReviewsForSelectedMovie() {
+        // TODO
+        return null;
+    }
 }
