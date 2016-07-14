@@ -11,9 +11,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.squareup.leakcanary.RefWatcher;
 
 import java.util.List;
@@ -44,6 +46,7 @@ public class MovieDetailFragment extends Fragment implements MovieDetail.View {
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.fab) FloatingActionButton favoriteButton;
 
+    @BindView(R.id.movie_detail_image) ImageView image;
     @BindView(R.id.movie_detail_title) TextView title;
     @BindView(R.id.movie_detail_date) TextView date;
     @BindView(R.id.movie_detail_rating) TextView rating;
@@ -86,6 +89,8 @@ public class MovieDetailFragment extends Fragment implements MovieDetail.View {
     @Override
     public void showMovie(Movie movie) {
         Timber.d("MovieDetailFragment showMovie() %s", movie);
+
+        Glide.with(getActivity()).load(movie.posterUrl()).crossFade().into(image);
 
         title.setText(movie.originalTitle());
         date.setText(movie.releaseDate());
