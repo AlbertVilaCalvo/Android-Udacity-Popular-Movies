@@ -49,6 +49,8 @@ public class MovieDetailFragment extends Fragment implements MovieDetail.View {
     @BindView(R.id.movie_detail_overview) TextView overview;
     @BindView(R.id.movie_detail_videos_header) TextView videosHeader;
     @BindView(R.id.movie_detail_videos_layout) LinearLayout videosLayout;
+    @BindView(R.id.movie_detail_reviews_header) TextView reviewsHeader;
+    @BindView(R.id.movie_detail_reviews_layout) LinearLayout reviewsLayout;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
