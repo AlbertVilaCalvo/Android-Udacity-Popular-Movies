@@ -3,6 +3,7 @@ package eu.albertvila.popularmovies.stage2.feature.moviedetail;
 import java.util.List;
 
 import eu.albertvila.popularmovies.stage2.data.model.Movie;
+import eu.albertvila.popularmovies.stage2.data.model.Review;
 import eu.albertvila.popularmovies.stage2.data.model.Video;
 
 /**
@@ -13,6 +14,7 @@ public interface MovieDetail {
     interface View {
         void showMovie(Movie movies);
         void showVideos(List<Video> videos);
+        void showReviews(List<Review> reviews);
     }
 
     interface Presenter {

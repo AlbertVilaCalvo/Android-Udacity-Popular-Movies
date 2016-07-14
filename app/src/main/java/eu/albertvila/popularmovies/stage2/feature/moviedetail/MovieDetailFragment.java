@@ -26,6 +26,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import eu.albertvila.popularmovies.stage2.R;
 import eu.albertvila.popularmovies.stage2.data.model.Movie;
+import eu.albertvila.popularmovies.stage2.data.model.Review;
 import eu.albertvila.popularmovies.stage2.data.model.Video;
 import eu.albertvila.popularmovies.stage2.feature.FragmentListener;
 import eu.albertvila.popularmovies.stage2.misc.App;
@@ -117,6 +118,24 @@ public class MovieDetailFragment extends Fragment implements MovieDetail.View {
                 }
             });
             videosLayout.addView(text);
+        }
+    }
+
+    @Override
+    public void showReviews(List<Review> reviews) {
+        if (reviews.size() == 0) {
+            reviewsHeader.setVisibility(View.GONE);
+        } else {
+            reviewsHeader.setVisibility(View.VISIBLE);
+        }
+        reviewsLayout.removeAllViews();
+        for (Review review : reviews) {
+            LinearLayout layout = (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.list_item_review, reviewsLayout, false);
+            TextView author = (TextView) layout.findViewById(R.id.list_item_review_author);
+            author.setText(review.author());
+            TextView content = (TextView) layout.findViewById(R.id.list_item_review_content);
+            content.setText(review.content());
+            reviewsLayout.addView(layout);
         }
     }
 
