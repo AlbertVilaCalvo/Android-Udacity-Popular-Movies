@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.leakcanary.RefWatcher;
@@ -41,6 +42,7 @@ public class MovieDetailFragment extends Fragment implements MovieDetail.View {
     @BindView(R.id.movie_detail_date) TextView date;
     @BindView(R.id.movie_detail_rating) TextView rating;
     @BindView(R.id.movie_detail_overview) TextView overview;
+    @BindView(R.id.movie_detail_videos_layout) LinearLayout videosLayout;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
