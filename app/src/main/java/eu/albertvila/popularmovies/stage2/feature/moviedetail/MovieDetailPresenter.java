@@ -4,6 +4,7 @@ package eu.albertvila.popularmovies.stage2.feature.moviedetail;
 import java.util.List;
 
 import eu.albertvila.popularmovies.stage2.data.model.Movie;
+import eu.albertvila.popularmovies.stage2.data.model.Review;
 import eu.albertvila.popularmovies.stage2.data.model.Video;
 import eu.albertvila.popularmovies.stage2.data.repository.MovieRepository;
 import rx.Observable;
@@ -32,6 +33,7 @@ public class MovieDetailPresenter implements MovieDetail.Presenter {
         this.view = view;
         observeSelectedMovie();
         observeVideosForSelectedMovie();
+        observeReviewsForSelectedMovie();
     }
 
     @Override
@@ -88,6 +90,30 @@ public class MovieDetailPresenter implements MovieDetail.Presenter {
                 Timber.i("MovieDetailPresenter observeVideosForSelectedMovie() onNext() - videos: %s", videos);
                 if (view != null) {
                     view.showVideos(videos);
+                }
+            }
+        });
+        subscriptions.add(subscription);
+    }
+
+    private void observeReviewsForSelectedMovie() {
+        Observable<List<Review>> observable = movieRepository.observeReviewsForSelectedMovie();
+        Subscription subscription = observable.subscribe(new Subscriber<List<Review>>() {
+            @Override
+            public void onCompleted() {
+                Timber.i("MovieDetailPresenter getMovie() onCompleted()");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Timber.e(e, "MovieDetailPresenter observeReviewsForSelectedMovie() onError()");
+            }
+
+            @Override
+            public void onNext(List<Review> reviews) {
+                Timber.i("MovieDetailPresenter observeReviewsForSelectedMovie() onNext() - reviews: %s", reviews);
+                if (view != null) {
+                    view.showReviews(reviews);
                 }
             }
         });
