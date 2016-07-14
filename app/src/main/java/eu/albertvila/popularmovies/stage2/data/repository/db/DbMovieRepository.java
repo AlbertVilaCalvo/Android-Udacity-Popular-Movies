@@ -139,6 +139,7 @@ public class DbMovieRepository implements MovieRepository {
         });
     }
 
+
     // A BehaviourSubject emits the most recently emitted Movie when an observer subscribes to it.
     // We can retrieve the current selected movie with movieSubject.getValue()
     private BehaviorSubject<Movie> movieSubject = BehaviorSubject.create();
@@ -171,13 +172,17 @@ public class DbMovieRepository implements MovieRepository {
             return;
         }
 
+        subscribeToSelectedMovie(movie.id());
+    }
+
+    private void subscribeToSelectedMovie(long movieId) {
         if (selectedMovieSubscription != null && !selectedMovieSubscription.isUnsubscribed()) {
             selectedMovieSubscription.unsubscribe();
             Timber.i("DbMovieRepository selectedMovieSubscription.unsubscribe()");
         }
 
         Observable<Movie> selectedMovieObservable = db
-                .createQuery(Movie.TABLE, "SELECT * FROM " + Movie.TABLE + " WHERE " + Movie.ID  + " = ?", String.valueOf(movie.id()))
+                .createQuery(Movie.TABLE, "SELECT * FROM " + Movie.TABLE + " WHERE " + Movie.ID  + " = ?", String.valueOf(movieId))
                 .map(Movie.QUERY_TO_ITEM_MAPPER)
                 .observeOn(AndroidSchedulers.mainThread());
 
