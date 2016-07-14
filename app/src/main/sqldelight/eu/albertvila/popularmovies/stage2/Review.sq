@@ -1,0 +1,14 @@
+
+
+CREATE TABLE review (
+  id TEXT NOT NULL PRIMARY KEY,
+  movie_id INTEGER NOT NULL,
+  author TEXT NOT NULL,
+  content TEXT NOT NULL,
+  url TEXT NOT NULL
+);
+
+for_movie:
+SELECT *
+FROM review
+WHERE movie_id = ?;
