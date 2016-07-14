@@ -1,16 +1,20 @@
 package eu.albertvila.popularmovies.stage2.data.repository.db;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.squareup.sqlbrite.BriteDatabase;
 import com.squareup.sqlbrite.SqlBrite;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import eu.albertvila.popularmovies.stage2.data.api.DiscoverMoviesResponse;
 import eu.albertvila.popularmovies.stage2.data.api.MovieDbService;
+import eu.albertvila.popularmovies.stage2.data.api.VideosResponse;
 import eu.albertvila.popularmovies.stage2.data.model.Movie;
+import eu.albertvila.popularmovies.stage2.data.model.Video;
 import eu.albertvila.popularmovies.stage2.data.repository.MovieRepository;
 import eu.albertvila.popularmovies.stage2.data.repository.ShowMovieCriteria;
 import retrofit2.Call;
@@ -18,9 +22,12 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import rx.Observable;
 import rx.Observer;
+import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action0;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 import rx.subjects.BehaviorSubject;
 import timber.log.Timber;
 
@@ -152,15 +159,15 @@ public class DbMovieRepository implements MovieRepository {
     private Observer<Movie> selectedMovieObserver = new Observer<Movie>() {
         @Override
         public void onCompleted() {
-            Timber.i("DbMovieRepository setSelectedMovie() onCompleted()");
+            Timber.i("DbMovieRepository selectedMovieObserver onCompleted()");
         }
         @Override
         public void onError(Throwable e) {
-            Timber.e(e, "DbMovieRepository setSelectedMovie() onError()");
+            Timber.e(e, "DbMovieRepository selectedMovieObserver onError()");
         }
         @Override
         public void onNext(Movie movie) {
-            Timber.i("DbMovieRepository setSelectedMovie() onNext() - movie: %s", movie.toString());
+            Timber.i("DbMovieRepository selectedMovieObserver onNext() - movie: %s", movie.toString());
             movieSubject.onNext(movie);
         }
     };
@@ -173,6 +180,9 @@ public class DbMovieRepository implements MovieRepository {
         }
 
         subscribeToSelectedMovie(movie.id());
+        subscribeToVideosForSelectedMovie(movie.id());
+
+        getVideosForMovie(movie.id());
     }
 
     private void subscribeToSelectedMovie(long movieId) {
@@ -221,6 +231,105 @@ public class DbMovieRepository implements MovieRepository {
         contentValues.put(Movie.FAVORITE, newFavoriteValue);
         db.update(Movie.TABLE, contentValues, Movie.ID  + " = ?", String.valueOf(selectedMovie.id()));
         Timber.i("Update movie '%s' - set favorite to %d", selectedMovie.originalTitle(), newFavoriteValue);
+    }
+
+
+    private void getVideosForMovie(long movieId) {
+        Observable<VideosResponse> observable = movieDbService.getVideosForMovieRx(movieId, apiKey);
+        observable
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.computation())
+                .subscribe(new Subscriber<VideosResponse>() {
+                    @Override
+                    public void onCompleted() {
+                        Timber.i("getVideosForMovie() onCompleted()");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Timber.e(e, "getVideosForMovie() onError()");
+                    }
+
+                    @Override
+                    public void onNext(VideosResponse videosResponse) {
+                        // Timber.i("getVideosForMovie() onNext() thread: %s", Thread.currentThread().getName());
+                        Timber.i("getVideosForMovie() onNext() videosResponse %s", videosResponse);
+                        // Save to the DB
+                        BriteDatabase.Transaction transaction = db.newTransaction();
+                        try {
+                            int successInsertCount = 0;
+                            long movieId = videosResponse.id;
+                            for (Video video : videosResponse.results) {
+                                long id = db.insert(Video.TABLE_NAME,
+                                        Video.FACTORY.marshal()
+                                            .id(video.id())
+                                            .movie_id(movieId)
+                                            .name(video.name())
+                                            .key(video.key())
+                                            .asContentValues(),
+                                        SQLiteDatabase.CONFLICT_REPLACE);
+                                if (id != -1) successInsertCount++;
+                            }
+                            Timber.i("getVideosForMovie() insert() success/total %d/%d", successInsertCount, videosResponse.results.size());
+                            transaction.markSuccessful();
+                        } finally {
+                            transaction.end();
+                        }
+                    }
+                });
+    }
+
+    private BehaviorSubject<List<Video>> videosForSelectedMovieSubject = BehaviorSubject.create();
+    private Subscription videosForSelectedMovieSubscription; // to unsubscribe
+    private Observer<List<Video>> videosForSelectedMovieObserver = new Observer<List<Video>>() {
+        @Override
+        public void onCompleted() {
+            Timber.i("DbMovieRepository videosForSelectedMovieObserver onCompleted()");
+        }
+        @Override
+        public void onError(Throwable e) {
+            Timber.e(e, "DbMovieRepository videosForSelectedMovieObserver onError()");
+        }
+        @Override
+        public void onNext(List<Video> videos) {
+            Timber.i("DbMovieRepository videosForSelectedMovieObserver onNext() - movie: %s", videos.toString());
+            videosForSelectedMovieSubject.onNext(videos);
+        }
+    };
+
+    private void subscribeToVideosForSelectedMovie(long movieId) {
+        if (videosForSelectedMovieSubscription != null && !videosForSelectedMovieSubscription.isUnsubscribed()) {
+            videosForSelectedMovieSubscription.unsubscribe();
+            Timber.i("DbMovieRepository videosForSelectedMovieSubscription.unsubscribe()");
+        }
+
+        Observable<List<Video>> videosForSelectedMovieObservable = db
+                .createQuery(Video.TABLE_NAME, Video.FOR_MOVIE, String.valueOf(movieId))
+                .map(new Func1<SqlBrite.Query, List<Video>>() {
+                    @Override
+                    public List<Video> call(SqlBrite.Query query) {
+                        Timber.i("subscribeToVideosForSelectedMovie map thread: %s", Thread.currentThread().getName());
+                        Cursor cursor = query.run();
+                        try {
+                            List<Video> videos = new ArrayList<>(cursor.getCount());
+                            while (cursor.moveToNext()) {
+                                Video video = Video.MAPPER.map(cursor);
+                                videos.add(video);
+                            }
+                            return videos;
+                        } finally {
+                            cursor.close();
+                        }
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread());
+
+        videosForSelectedMovieSubscription = videosForSelectedMovieObservable.subscribe(videosForSelectedMovieObserver);
+    }
+
+    @Override
+    public Observable<List<Video>> observeVideosForSelectedMovie() {
+        return videosForSelectedMovieSubject;
     }
 
 }
