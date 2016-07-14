@@ -2,6 +2,7 @@ package eu.albertvila.popularmovies.stage2.data.api;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Observable;
 
@@ -26,6 +27,7 @@ public interface MovieDbService {
     @GET("discover/movie")
     Observable<DiscoverMoviesResponse> discoverMoviesRx(@Query("api_key") String key, @Query("sort_by") String sort);
 
+
     // http://docs.themoviedb.apiary.io/#reference/movies/movieidvideos/get?console=1
     // Response example:
     // {"id":368596,
@@ -45,5 +47,25 @@ public interface MovieDbService {
 
     @GET("movie/{id}/videos")
     Observable<VideosResponse> getVideosForMovieRx(@Path("id") long movieId, @Query("api_key") String key);
+
+
+    // http://docs.themoviedb.apiary.io/#reference/movies/movieidsimilar/get?console=1
+    // Response example:
+    // {"id":368596,"page":1,"results":[],"total_pages":0,"total_results":0}
+    // Response example:
+    // {"id":47933,
+    // "page":1,
+    // "results":[
+    //      {"id":"5769f7afc3a3683726001772",
+    //      "author":"Screen-Space",
+    //      "content":"\"Independence Day: Resurgence entertains like few Hollywood blockbusters have of late, largely by
+    //          foregoing pretension on every level and drilling down on the basic tenets of popcorn moviemaking...\"\r\n\r\nRead
+    //          the full review here: http://screen-space.squarespace.com/reviews/2016/6/22/independence-day-resurgence.html",
+    //      "url":"https://www.themoviedb.org/review/5769f7afc3a3683726001772"}],
+    // "total_pages":1,
+    // "total_results":1}
+
+    @GET("movie/{id}/reviews")
+    Observable<ReviewsResponse> getReviewsForMovieRx(@Path("id") long movieId, @Query("api_key") String key);
 
 }
