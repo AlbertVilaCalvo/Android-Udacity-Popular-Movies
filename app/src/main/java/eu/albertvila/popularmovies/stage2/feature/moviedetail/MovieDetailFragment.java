@@ -47,6 +47,7 @@ public class MovieDetailFragment extends Fragment implements MovieDetail.View {
     @BindView(R.id.movie_detail_date) TextView date;
     @BindView(R.id.movie_detail_rating) TextView rating;
     @BindView(R.id.movie_detail_overview) TextView overview;
+    @BindView(R.id.movie_detail_videos_header) TextView videosHeader;
     @BindView(R.id.movie_detail_videos_layout) LinearLayout videosLayout;
 
     @Override
@@ -98,6 +99,11 @@ public class MovieDetailFragment extends Fragment implements MovieDetail.View {
 
     @Override
     public void showVideos(List<Video> videos) {
+        if (videos.size() == 0) {
+            videosHeader.setVisibility(View.GONE);
+        } else {
+            videosHeader.setVisibility(View.VISIBLE);
+        }
         videosLayout.removeAllViews();
         for (final Video video : videos) {
             TextView text = (TextView) LayoutInflater.from(getActivity()).inflate(R.layout.list_item_video, videosLayout, false);
