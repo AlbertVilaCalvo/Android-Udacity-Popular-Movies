@@ -1,5 +1,7 @@
 package eu.albertvila.popularmovies.stage2.feature.moviedetail;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -14,6 +16,8 @@ import android.widget.TextView;
 
 import com.squareup.leakcanary.RefWatcher;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -22,6 +26,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import eu.albertvila.popularmovies.stage2.R;
 import eu.albertvila.popularmovies.stage2.data.model.Movie;
+import eu.albertvila.popularmovies.stage2.data.model.Video;
 import eu.albertvila.popularmovies.stage2.feature.FragmentListener;
 import eu.albertvila.popularmovies.stage2.misc.App;
 import timber.log.Timber;
@@ -89,6 +94,22 @@ public class MovieDetailFragment extends Fragment implements MovieDetail.View {
             favoriteButton.setImageResource(R.drawable.ic_star_border_black_24dp);
         }
         favoriteButton.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void showVideos(List<Video> videos) {
+        videosLayout.removeAllViews();
+        for (final Video video : videos) {
+            TextView text = (TextView) LayoutInflater.from(getActivity()).inflate(R.layout.list_item_video, videosLayout, false);
+            text.setText(video.name());
+            text.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + video.key())));
+                }
+            });
+            videosLayout.addView(text);
+        }
     }
 
     @OnClick(R.id.fab)
