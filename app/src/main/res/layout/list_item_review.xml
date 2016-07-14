@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp"
+    tools:background="@color/bg"
+    >
+
+    <TextView
+        android:id="@+id/list_item_review_author"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:drawableLeft="@drawable/ic_mode_comment_white_24dp"
+        android:drawablePadding="16dp"
+        android:textColor="@color/white"
+        tools:text="John Skeet"
+        android:background="?selectableItemBackground"
+        />
+
+    <TextView
+        android:id="@+id/list_item_review_content"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/white"
+        tools:text="I loved the movie"
+        android:background="?selectableItemBackground"
+        />
+
+</LinearLayout>
