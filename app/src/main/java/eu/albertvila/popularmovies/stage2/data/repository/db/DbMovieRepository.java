@@ -147,9 +147,11 @@ public class DbMovieRepository implements MovieRepository {
     }
 
 
+    // SELECTED MOVIE
+
     // A BehaviourSubject emits the most recently emitted Movie when an observer subscribes to it.
-    // We can retrieve the current selected movie with movieSubject.getValue()
-    private BehaviorSubject<Movie> movieSubject = BehaviorSubject.create();
+    // We can retrieve the current selected movie with selectedMovieSubject.getValue()
+    private BehaviorSubject<Movie> selectedMovieSubject = BehaviorSubject.create();
 
     private Subscription selectedMovieSubscription; // to unsubscribe
 
@@ -168,14 +170,14 @@ public class DbMovieRepository implements MovieRepository {
         @Override
         public void onNext(Movie movie) {
             Timber.i("DbMovieRepository selectedMovieObserver onNext() - movie: %s", movie.toString());
-            movieSubject.onNext(movie);
+            selectedMovieSubject.onNext(movie);
         }
     };
 
     @Override
     public void setSelectedMovie(Movie movie) {
         // Check if it's the same as the current selected movie
-        if (movie.equals(movieSubject.getValue())) {
+        if (movie.equals(selectedMovieSubject.getValue())) {
             return;
         }
 
@@ -210,20 +212,20 @@ public class DbMovieRepository implements MovieRepository {
 //            @Override
 //            public void onNext(Movie movie) {
 //                Timber.i("DbMovieRepository setSelectedMovie() onNext() - movie: %s", movie.toString());
-//                movieSubject.onNext(movie);
+//                selectedMovieSubject.onNext(movie);
 //            }
 //        });
     }
 
     @Override
     public Observable<Movie> observeSelectedMovie() {
-        return movieSubject;
+        return selectedMovieSubject;
     }
 
     @Override
     public void favoriteButtonClick() {
         // Get current selected movie from subject
-        Movie selectedMovie = movieSubject.getValue();
+        Movie selectedMovie = selectedMovieSubject.getValue();
         // Toggle favorite
         int newFavoriteValue = selectedMovie.isFavorite() ? 0 : 1;
         // Update DB
@@ -234,11 +236,14 @@ public class DbMovieRepository implements MovieRepository {
     }
 
 
+    // VIDEOS
+
     private void getVideosForMovie(long movieId) {
         Observable<VideosResponse> observable = movieDbService.getVideosForMovieRx(movieId, apiKey);
         observable
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.computation())
+                // TODO filter videos that are not from site "YouTube"
                 .subscribe(new Subscriber<VideosResponse>() {
                     @Override
                     public void onCompleted() {
