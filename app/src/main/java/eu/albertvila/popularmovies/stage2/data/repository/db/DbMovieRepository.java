@@ -86,6 +86,7 @@ public class DbMovieRepository implements MovieRepository {
         observable
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.computation())
+                .retry(1)
                 .subscribe(new Subscriber<DiscoverMoviesResponse>() {
                     @Override
                     public void onCompleted() {
@@ -249,6 +250,7 @@ public class DbMovieRepository implements MovieRepository {
         observable
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.computation())
+                .retry(1)
                 // TODO filter videos that are not from site "YouTube"
                 .subscribe(new Subscriber<VideosResponse>() {
                     @Override
@@ -351,6 +353,7 @@ public class DbMovieRepository implements MovieRepository {
         observable
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.computation())
+                .retry(1)
                 .subscribe(new Subscriber<ReviewsResponse>() {
                     @Override
                     public void onCompleted() {
