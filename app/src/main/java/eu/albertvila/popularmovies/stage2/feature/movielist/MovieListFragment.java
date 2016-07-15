@@ -5,12 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,10 +59,25 @@ public class MovieListFragment extends Fragment implements MovieList.View, Movie
         // ((App) getActivity().getApplication()).getAppComponent().inject(this);
         App.getComponent(getActivity()).inject(this);
 
-        AppCompatActivity activity = (AppCompatActivity) getActivity();
-        activity.setSupportActionBar(toolbar);
+        // This shows the title on the toolbar. However with this the menu item disappears on rotation :(
+        // AppCompatActivity activity = (AppCompatActivity) getActivity();
+        // activity.setSupportActionBar(toolbar);
+        toolbar.setTitle(R.string.app_name);
 
-        setHasOptionsMenu(true);
+        // With setHasOptionsMenu(true) the menu item disappears on rotation (only if it's
+        // master-detail in landscape but not in portrait)
+        // setHasOptionsMenu(true);
+        toolbar.inflateMenu(R.menu.menu_movie_list);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.action_show_movie_criteria) {
+                    presenter.menuItemShowMovieCriteriaClick();
+                    return true;
+                }
+                return false;
+            }
+        });
 
         adapter = new MoviesAdapter(this, movies);
         recyclerView.setHasFixedSize(true);
@@ -149,6 +161,9 @@ public class MovieListFragment extends Fragment implements MovieList.View, Movie
     // Tag used to identify the DialogFragment ShowMovieCriteriaDialog in the FragmentManager
     private static final String SHOW_MOVIE_CRITERIA_DIALOG_TAG = "ShowMovieCriteriaDialogTag";
 
+    /*
+    // With setHasOptionsMenu(true) the menu item disappears on rotation (only if it's master-detail
+    // in landscape but not in portrait). We set the menu item with toolbar.setOnMenuItemClickListener().
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -163,6 +178,7 @@ public class MovieListFragment extends Fragment implements MovieList.View, Movie
         }
         return super.onOptionsItemSelected(item);
     }
+    */
 
     @Override
     public void showMovieCriteriaDialog(ShowMovieCriteria criteria) {
