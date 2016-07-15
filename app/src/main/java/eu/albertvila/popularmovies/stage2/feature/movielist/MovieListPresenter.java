@@ -97,7 +97,7 @@ public class MovieListPresenter implements MovieList.Presenter {
                                         return m1.popularity() > m2.popularity() ? -1 : 1;
                                     }
                                 });
-                            } else if (movieRepository.getShowMovieCriteria() == ShowMovieCriteria.BEST_RATED) {
+                            } else if (movieRepository.getShowMovieCriteria() == ShowMovieCriteria.TOP_RATED) {
                                 Collections.sort(sortedMovies, new Comparator<Movie>() {
                                     @Override
                                     public int compare(Movie m1, Movie m2) {
@@ -115,7 +115,7 @@ public class MovieListPresenter implements MovieList.Presenter {
                     @Override
                     public void call(List<Movie> movies) {
                         for (Movie movie : movies) {
-                            if (movieRepository.getShowMovieCriteria() == ShowMovieCriteria.BEST_RATED) {
+                            if (movieRepository.getShowMovieCriteria() == ShowMovieCriteria.TOP_RATED) {
                                 Timber.i("rating %f\t\t\t%s", movie.rating(), movie.originalTitle());
                             }
                             if (movieRepository.getShowMovieCriteria() == ShowMovieCriteria.MOST_POPULAR) {

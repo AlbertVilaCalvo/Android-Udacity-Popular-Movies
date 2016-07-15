@@ -77,7 +77,7 @@ public class DbMovieRepository implements MovieRepository {
     private void fetchMovies() {
         // Note: if showMovieCriteria is ShowMovieCriteria.FAVORITES, we fetch the movies by popularity
         Observable<MoviesResponse> observable;
-        if (showMovieCriteria == ShowMovieCriteria.BEST_RATED) {
+        if (showMovieCriteria == ShowMovieCriteria.TOP_RATED) {
             observable = movieDbService.getTopRatedMoviesRx(apiKey);
         } else {
             observable = movieDbService.getPopularMoviesRx(apiKey);

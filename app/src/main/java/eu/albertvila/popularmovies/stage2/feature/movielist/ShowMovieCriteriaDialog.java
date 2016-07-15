@@ -37,7 +37,7 @@ public class ShowMovieCriteriaDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         ShowMovieCriteria currentCriteria = (ShowMovieCriteria) getArguments().getSerializable(ARG_CURRENT_SHOW_MOVIE_CRITERIA);
         int checkedItem = 0; // ShowMovieCriteria.MOST_POPULAR
-        if (currentCriteria.equals(ShowMovieCriteria.BEST_RATED)) {
+        if (currentCriteria.equals(ShowMovieCriteria.TOP_RATED)) {
             checkedItem = 1;
         } else if (currentCriteria.equals(ShowMovieCriteria.FAVORITES)) {
             checkedItem = 2;
@@ -60,7 +60,7 @@ public class ShowMovieCriteriaDialog extends DialogFragment {
                         if (selectedPosition == 0) {
                             criteria = ShowMovieCriteria.MOST_POPULAR;
                         } else if (selectedPosition == 1) {
-                            criteria = ShowMovieCriteria.BEST_RATED;
+                            criteria = ShowMovieCriteria.TOP_RATED;
                         } else {
                             criteria = ShowMovieCriteria.FAVORITES;
                         }

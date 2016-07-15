@@ -8,11 +8,11 @@
     <!-- Movie type dialog -->
     <string-array name="movie_type_options">
         <item>@string/most_popular</item>
-        <item>@string/best_rated</item>
+        <item>@string/top_rated</item>
         <item>@string/favorites</item>
     </string-array>
     <string name="most_popular">Most Popular</string>
-    <string name="best_rated">Best Rated</string>
+    <string name="top_rated">Top Rated</string>
     <string name="favorites">Favorites</string>
     <string name="button_positive">OK</string>
     <string name="button_negative">Cancel</string>
