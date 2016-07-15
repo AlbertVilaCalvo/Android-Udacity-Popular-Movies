@@ -10,7 +10,7 @@ import com.squareup.sqlbrite.SqlBrite;
 import java.util.ArrayList;
 import java.util.List;
 
-import eu.albertvila.popularmovies.stage2.data.api.DiscoverMoviesResponse;
+import eu.albertvila.popularmovies.stage2.data.api.MoviesResponse;
 import eu.albertvila.popularmovies.stage2.data.api.MovieDbService;
 import eu.albertvila.popularmovies.stage2.data.api.ReviewsResponse;
 import eu.albertvila.popularmovies.stage2.data.api.VideosResponse;
@@ -76,7 +76,7 @@ public class DbMovieRepository implements MovieRepository {
 
     private void fetchMovies() {
         // Note: if showMovieCriteria is ShowMovieCriteria.FAVORITES, we fetch the movies by popularity
-        Observable<DiscoverMoviesResponse> observable;
+        Observable<MoviesResponse> observable;
         if (showMovieCriteria == ShowMovieCriteria.BEST_RATED) {
             observable = movieDbService.getTopRatedMoviesRx(apiKey);
         } else {
@@ -87,7 +87,7 @@ public class DbMovieRepository implements MovieRepository {
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.computation())
                 .retry(1)
-                .subscribe(new Subscriber<DiscoverMoviesResponse>() {
+                .subscribe(new Subscriber<MoviesResponse>() {
                     @Override
                     public void onCompleted() {
                         Timber.d("fetchMovies() onCompleted()");
@@ -99,10 +99,10 @@ public class DbMovieRepository implements MovieRepository {
                     }
 
                     @Override
-                    public void onNext(DiscoverMoviesResponse discoverMoviesResponse) {
+                    public void onNext(MoviesResponse moviesResponse) {
                         Timber.i("fetchMovies() onNext() thread: %s", Thread.currentThread().getName());
 
-                        List<Movie> movies = discoverMoviesResponse.getMovies();
+                        List<Movie> movies = moviesResponse.getMovies();
                         Timber.d("fetchMovies() onNext() movies.size() %d", movies.size());
 
                         if (movies.size() == 0) {

@@ -2,7 +2,7 @@ package eu.albertvila.popularmovies.stage2.data.repository.memory;
 
 import java.util.List;
 
-import eu.albertvila.popularmovies.stage2.data.api.DiscoverMoviesResponse;
+import eu.albertvila.popularmovies.stage2.data.api.MoviesResponse;
 import eu.albertvila.popularmovies.stage2.data.api.MovieDbService;
 import eu.albertvila.popularmovies.stage2.data.model.Movie;
 import eu.albertvila.popularmovies.stage2.data.model.Review;
@@ -45,15 +45,15 @@ public class MemoryMovieRepository implements MovieRepository {
     @Override
     public Observable<List<Movie>> observeMovies() {
         // TODO We are ignoring ShowMovieCriteria for now -> fix
-        Observable<DiscoverMoviesResponse> observable = movieDbService.discoverMoviesRx(apiKey, MovieDbService.SORT_BY_POPULARITY);
+        Observable<MoviesResponse> observable = movieDbService.discoverMoviesRx(apiKey, MovieDbService.SORT_BY_POPULARITY);
 
         return observable
                 .subscribeOn(Schedulers.io())
-                .map(new Func1<DiscoverMoviesResponse, List<Movie>>() {
+                .map(new Func1<MoviesResponse, List<Movie>>() {
                     @Override
-                    public List<Movie> call(DiscoverMoviesResponse discoverMoviesResponse) {
+                    public List<Movie> call(MoviesResponse moviesResponse) {
                         // Timber.i("observeMovies() map() thread: %s", Thread.currentThread().getName());
-                        return discoverMoviesResponse.getMovies();
+                        return moviesResponse.getMovies();
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread());

@@ -11,7 +11,7 @@ import eu.albertvila.popularmovies.stage2.data.model.Movie;
 /**
  * Created by albertvilacalvo on 20/10/15.
  */
-public class DiscoverMoviesResponse {
+public class MoviesResponse {
 
     // Gson tutorial:
     // https://github.com/codepath/android_guides/wiki/Leveraging-the-Gson-Library
@@ -19,7 +19,7 @@ public class DiscoverMoviesResponse {
     @SerializedName("results")
     List<Movie> movies;
 
-    public DiscoverMoviesResponse() {
+    public MoviesResponse() {
         movies = new ArrayList<Movie>();
     }
 
