@@ -23,9 +23,15 @@ public interface MovieDbService {
     @GET("discover/movie")
     Call<DiscoverMoviesResponse> discoverMovies(@Query("api_key") String key, @Query("sort_by") String sort);
 
-    // RxJava version
     @GET("discover/movie")
     Observable<DiscoverMoviesResponse> discoverMoviesRx(@Query("api_key") String key, @Query("sort_by") String sort);
+
+
+    @GET("movie/popular")
+    Observable<DiscoverMoviesResponse> getPopularMoviesRx(@Query("api_key") String key);
+
+    @GET("movie/top_rated")
+    Observable<DiscoverMoviesResponse> getTopRatedMoviesRx(@Query("api_key") String key);
 
 
     // http://docs.themoviedb.apiary.io/#reference/movies/movieidvideos/get?console=1
