@@ -19,9 +19,6 @@ import eu.albertvila.popularmovies.stage2.data.model.Review;
 import eu.albertvila.popularmovies.stage2.data.model.Video;
 import eu.albertvila.popularmovies.stage2.data.repository.MovieRepository;
 import eu.albertvila.popularmovies.stage2.data.repository.ShowMovieCriteria;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import rx.Observable;
 import rx.Observer;
 import rx.Subscriber;
@@ -79,73 +76,77 @@ public class DbMovieRepository implements MovieRepository {
 
     private void fetchMovies() {
         // Note: if showMovieCriteria is ShowMovieCriteria.FAVORITES, we fetch the movies by popularity
-        String sortOrder = MovieDbService.SORT_BY_POPULARITY;
+        Observable<DiscoverMoviesResponse> observable;
         if (showMovieCriteria == ShowMovieCriteria.BEST_RATED) {
-            sortOrder = MovieDbService.SORT_BY_RATING;
+            observable = movieDbService.getTopRatedMoviesRx(apiKey);
+        } else {
+            observable = movieDbService.getPopularMoviesRx(apiKey);
         }
 
-        Call<DiscoverMoviesResponse> call = movieDbService.discoverMovies(apiKey, sortOrder);
-        call.enqueue(new Callback<DiscoverMoviesResponse>() {
-            @Override
-            public void onResponse(Call<DiscoverMoviesResponse> call, Response<DiscoverMoviesResponse> response) {
-                if (!response.isSuccessful()) {
-                    // response.code() is not in range [200...3000)
-                    Timber.d("fetchMovies() !response.isSuccessful()");
-                    return;
-                }
-
-                List<Movie> movies = response.body().getMovies();
-                Timber.d("fetchMovies() movies.size() %d", movies.size());
-
-                if (movies.size() == 0) {
-                    return;
-                }
-
-                // TODO do this in the background!
-                // Save movies to db
-                // We use transactions to prevent large changes to the data from spamming the subscriber
-                BriteDatabase.Transaction transaction = db.newTransaction();
-                try {
-                    int successInsertCount = 0;
-                    for (Movie movie : movies) {
-                        ContentValues contentValues = Movie.buildContentValuesWithoutFavorite(movie);
-
-                        // http://stackoverflow.com/questions/13311727/android-sqlite-insert-or-update
-                        // https://developer.android.com/reference/android/database/sqlite/SQLiteDatabase.html#CONFLICT_REPLACE
-                        // If we do this:
-                        // long id = db.insert(Movie.TABLE, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
-                        // We replace the entire row if already exists and we loose the 'favorite' value! :(
-
-                        // http://stackoverflow.com/a/20568176/4034572
-                        // We insert and, if it fails (because the column already exists), then we update.
-                        // Note that we do NOT update 'favorite' in order to preserve it's value!
-                        long id = db.insert(Movie.TABLE, contentValues, SQLiteDatabase.CONFLICT_IGNORE);
-                        if (id == -1) {
-                            id = db.update(Movie.TABLE, contentValues, Movie.ID  + " = ?", String.valueOf(movie.id()));
-                        }
-
-                        if (id == -1) {
-                            Timber.e("fetchMovies() insert() error on Movie with id %d", movie.id());
-                        } else {
-                            successInsertCount++;
-                        }
-
-                        // WE could also use db.executeAndTrigger(); with a raw query to update or insert
-                        // http://stackoverflow.com/questions/4205181/insert-into-a-mysql-table-or-update-if-exists
-                        // http://stackoverflow.com/questions/418898/sqlite-upsert-not-insert-or-replace
+        observable
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.computation())
+                .subscribe(new Subscriber<DiscoverMoviesResponse>() {
+                    @Override
+                    public void onCompleted() {
+                        Timber.d("fetchMovies() onCompleted()");
                     }
-                    Timber.i("fetchMovies() insert() success/total %d/%d", successInsertCount, movies.size());
-                    transaction.markSuccessful();
-                } finally {
-                    transaction.end();
-                }
-            }
 
-            @Override
-            public void onFailure(Call<DiscoverMoviesResponse> call, Throwable t) {
-                Timber.e(t, "fetchMovies() onFailure()");
-            }
-        });
+                    @Override
+                    public void onError(Throwable e) {
+                        Timber.e(e, "fetchMovies() onError()");
+                    }
+
+                    @Override
+                    public void onNext(DiscoverMoviesResponse discoverMoviesResponse) {
+                        Timber.i("fetchMovies() onNext() thread: %s", Thread.currentThread().getName());
+
+                        List<Movie> movies = discoverMoviesResponse.getMovies();
+                        Timber.d("fetchMovies() onNext() movies.size() %d", movies.size());
+
+                        if (movies.size() == 0) {
+                            return;
+                        }
+
+                        // Save movies to db
+                        // We use transactions to prevent large changes to the data from spamming the subscriber
+                        BriteDatabase.Transaction transaction = db.newTransaction();
+                        try {
+                            int successInsertCount = 0;
+                            for (Movie movie : movies) {
+                                ContentValues contentValues = Movie.buildContentValuesWithoutFavorite(movie);
+
+                                // http://stackoverflow.com/questions/13311727/android-sqlite-insert-or-update
+                                // https://developer.android.com/reference/android/database/sqlite/SQLiteDatabase.html#CONFLICT_REPLACE
+                                // If we do this:
+                                // long id = db.insert(Movie.TABLE, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
+                                // We replace the entire row if already exists and we loose the 'favorite' value! :(
+
+                                // http://stackoverflow.com/a/20568176/4034572
+                                // We insert and, if it fails (because the column already exists), then we update.
+                                // Note that we do NOT update 'favorite' in order to preserve it's value!
+                                long id = db.insert(Movie.TABLE, contentValues, SQLiteDatabase.CONFLICT_IGNORE);
+                                if (id == -1) {
+                                    id = db.update(Movie.TABLE, contentValues, Movie.ID  + " = ?", String.valueOf(movie.id()));
+                                }
+
+                                if (id == -1) {
+                                    Timber.e("fetchMovies() insert() error on Movie with id %d", movie.id());
+                                } else {
+                                    successInsertCount++;
+                                }
+
+                                // WE could also use db.executeAndTrigger(); with a raw query to update or insert
+                                // http://stackoverflow.com/questions/4205181/insert-into-a-mysql-table-or-update-if-exists
+                                // http://stackoverflow.com/questions/418898/sqlite-upsert-not-insert-or-replace
+                            }
+                            Timber.i("fetchMovies() insert() success/total %d/%d", successInsertCount, movies.size());
+                            transaction.markSuccessful();
+                        } finally {
+                            transaction.end();
+                        }
+                    }
+                });
     }
 
 
