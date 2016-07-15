@@ -17,4 +17,8 @@
     <string name="button_positive">OK</string>
     <string name="button_negative">Cancel</string>
 
+    <!-- Movie detail -->
+    <string name="trailers_header">Trailers:</string>
+    <string name="reviews_header">Reviews:</string>
+
 </resources>

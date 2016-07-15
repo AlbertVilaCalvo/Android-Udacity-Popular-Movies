@@ -78,7 +78,7 @@
             android:textColor="@color/white"
             android:textSize="20sp"
             android:padding="16dp"
-            android:text="Trailers:"
+            android:text="@string/trailers_header"
             android:visibility="gone"
             tools:visibility="visible"
             />
@@ -97,7 +97,7 @@
             android:textColor="@color/white"
             android:textSize="20sp"
             android:padding="16dp"
-            android:text="Reviews:"
+            android:text="@string/reviews_header"
             android:visibility="gone"
             tools:visibility="visible"
             />
