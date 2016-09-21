@@ -1,5 +1,9 @@
 # Popular Movies
 
+An Android app that displays movies. It's the project Popular Movies (Stage 2) of the Udacity Android Developer Nanodegree.
+
+It uses libraries like Dagger 2, Retrofit, RxJava and AutoValue. It's built using the Model-View-Presenter pattern. It caches data locally using an SQLite database and the libraries SQLBrite and SQLDelight.
+
 ## The Movie DB API Key
 
 To use the app you'll need an API Key for [www.themoviedb.org](https://www.themoviedb.org/). The app
