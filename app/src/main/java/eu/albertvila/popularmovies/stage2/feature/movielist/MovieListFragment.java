@@ -155,7 +155,7 @@ public class MovieListFragment extends Fragment implements MovieList.View, Movie
     // Menu item to change the movie type (most popular, top rated or favorites)
 
     // We make this fragment the target fragment of ShowMovieCriteriaDialog, and we will receive the
-    // selected movie criteria from ShowMovieCriteriaDialog. See onOptionsItemSelected() below
+    // selected movie criteria from ShowMovieCriteriaDialog in onActivityResult().
     private static final int REQUEST_SHOW_MOVIE_CRITERIA = 0;
 
     // Tag used to identify the DialogFragment ShowMovieCriteriaDialog in the FragmentManager
