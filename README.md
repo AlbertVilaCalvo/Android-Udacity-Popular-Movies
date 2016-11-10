@@ -4,6 +4,8 @@ An Android app that displays movies. It's the project Popular Movies (Stage 2) o
 
 It uses libraries like Dagger 2, Retrofit, RxJava and AutoValue. It's built using the Model-View-Presenter pattern. It caches data locally using an SQLite database and the libraries SQLBrite and SQLDelight.
 
+It has a master-detail UI adapted for tablets.
+
 ## The Movie DB API Key
 
 To use the app you'll need an API Key for [www.themoviedb.org](https://www.themoviedb.org/). The app
@@ -17,3 +19,20 @@ expects an `string` resource named `movie_db_api_key` with the API key as it's v
 </resources>
 ```
 
+## Screenshots
+
+#### Main Activity
+
+![Main Activity](/screenshots/feature-MainActivity-11102016125237.png?raw=true "Main Activity")
+
+<p></p>
+
+#### Detail Activity
+
+![Detail Activity](/screenshots/feature-MainActivity-11102016125308.png?raw=true "Detail Activity")
+
+<p></p>
+
+#### Master Detail
+
+![Master Detail](/screenshots/Screenshot_2016-11-10-12-53-44.png?raw=true "Master Detail")
