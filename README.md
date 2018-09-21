@@ -1,10 +1,16 @@
 # Popular Movies
 
-An Android app that displays movies. It's the project Popular Movies (Stage 2) of the Udacity Android Developer Nanodegree.
+An Android app that displays movies. It's the project Popular Movies (Stage 2) of the Udacity's [Android Developer Nanodegree](https://www.udacity.com/course/android-developer-nanodegree-by-google--nd801).
 
-It uses libraries like Dagger 2, Retrofit, RxJava and AutoValue. It's built using the Model-View-Presenter pattern. It caches data locally using an SQLite database and the libraries SQLBrite and SQLDelight.
+It uses the libraries Dagger 2, Retrofit 2, RxJava 1 and AutoValue, among others.
 
-It has a master-detail UI adapted for tablets.
+It's built using the Model-View-Presenter pattern.
+
+It caches data locally using an SQLite database and the libraries SQLBrite and SQLDelight, so that it can work fully offline.
+
+Additionally, it has a master-detail UI adapted for tablets.
+
+You can sort the movies by rating or by popularity, and add them to favorites.
 
 ## The Movie DB API Key
 
@@ -23,16 +29,16 @@ expects an `string` resource named `movie_db_api_key` with the API key as it's v
 
 #### Main Activity
 
-![Main Activity](/screenshots/feature-MainActivity-11102016125237.png?raw=true "Main Activity")
+<img src="screenshots/feature-MainActivity-11102016125237.png" width="500px" title="Main Activity" alt="Main Activity">
 
-<p></p>
+<br>
 
 #### Detail Activity
 
-![Detail Activity](/screenshots/feature-MainActivity-11102016125308.png?raw=true "Detail Activity")
+<img src="screenshots/feature-MainActivity-11102016125308.png" width="500px" title="Detail Activity" alt="Detail Activity">
 
-<p></p>
+<br>
 
 #### Master Detail
 
-![Master Detail](/screenshots/Screenshot_2016-11-10-12-53-44.png?raw=true "Master Detail")
+<img src="screenshots/Screenshot_2016-11-10-12-53-44.png" width="870px" title="Master Detail" alt="Master Detail">
