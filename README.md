@@ -29,16 +29,16 @@ expects an `string` resource named `movie_db_api_key` with the API key as it's v
 
 #### Main Activity
 
-<img src="screenshots/feature-MainActivity-11102016125237.png" width="500px" title="Main Activity" alt="Main Activity">
+<img src="screenshots/feature-MainActivity-11102016125237.png" width="500" title="Main Activity" alt="Main Activity">
 
 <br>
 
 #### Detail Activity
 
-<img src="screenshots/feature-MainActivity-11102016125308.png" width="500px" title="Detail Activity" alt="Detail Activity">
+<img src="screenshots/feature-MainActivity-11102016125308.png" width="500" title="Detail Activity" alt="Detail Activity">
 
 <br>
 
 #### Master Detail
 
-<img src="screenshots/Screenshot_2016-11-10-12-53-44.png" width="870px" title="Master Detail" alt="Master Detail">
+<img src="screenshots/Screenshot_2016-11-10-12-53-44.png" width="870" title="Master Detail" alt="Master Detail">
